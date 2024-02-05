@@ -1,6 +1,7 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useUserContext } from "../helpers/Context";
+import { setUserLS } from "../helpers/localStorage";
 
 function Header() {
   const { setUser, user } = useUserContext();
@@ -14,7 +15,7 @@ function Header() {
           { headers: { Authorization: `Bearer ${response.access_token}` } }
         );
         setUser(res.data);
-        console.log(res);
+        setUserLS(res.data);
       } catch (error) {
         console.error(error.message);
       }

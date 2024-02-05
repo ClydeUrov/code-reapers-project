@@ -2,9 +2,10 @@ import { Link, Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import { UserContext } from "./helpers/Context";
 import { useState } from "react";
+import { getUsetLS } from "./helpers/localStorage";
 
 function App() {
-  const [user, setUser] = useState(false);
+  const [user, setUser] = useState(getUsetLS());
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <Header />
