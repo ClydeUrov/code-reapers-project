@@ -2,6 +2,23 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 function Header() {
   const { loginWithRedirect, logout, user, isLoading } = useAuth0();
+  console.log(user);
+
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: {
+        returnTo: "/profile",
+      },
+    });
+  };
+
+  const handleLogout = () => {
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  };
 
   return (
     <header className="flex justify-between px-4 py-2">
@@ -9,7 +26,7 @@ function Header() {
       {!isLoading && !user && (
         <button
           onClick={() => {
-            loginWithRedirect();
+            handleLogin();
           }}
           className="rounded-full border-blue-400 border-2 px-4 py-2 border-solid"
         >
@@ -18,7 +35,7 @@ function Header() {
       )}
       {!isLoading && user && (
         <button
-          onClick={() => logout()}
+          onClick={() => handleLogout()}
           className="rounded-full border-blue-400 border-2 px-4 py-2 border-solid"
         >
           Logout
