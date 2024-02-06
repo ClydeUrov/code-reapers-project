@@ -12,8 +12,9 @@ function LoginLogoutBtnHeader() {
     function handleClickOutside(event) {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         if (
-          event.target.id !== "account_show_modal_btn" &&
-          event.target.parentElement.id !== "account_show_modal_btn"
+          event?.target?.id !== "account_show_modal_btn" &&
+          event?.target?.parentElement?.id !== "account_show_modal_btn" &&
+          event?.target?.parentElement?.id !== "faRegUser"
         ) {
           setShowModal(() => false);
         }
@@ -63,7 +64,7 @@ function LoginLogoutBtnHeader() {
           id="account_show_modal_btn"
           className={`hover:shadow-l hover: flex gap-4 rounded-2xl border-2 border-solid ${showModal ? "border-gray-600 bg-gray-50 hover:border-gray-800 hover:bg-gray-100" : "border-gray-300 hover:border-gray-600 hover:bg-gray-50"} px-6  py-2 text-sm   font-semibold text-gray-600 duration-200 ease-in `}
         >
-          <FaRegUser size={20} className="text-gray-600" />
+          <FaRegUser id="faRegUser" size={20} className="text-gray-600" />
 
           <span>АКАУНТ</span>
         </button>
