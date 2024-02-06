@@ -5,7 +5,7 @@ import Header from "./Header";
 
 function Layout() {
   return (
-    <div className="container mx-auto max-w-1440">
+    <div className="container mx-auto w-1440px">
       <Header />
       <Outlet />
       <Footer />
