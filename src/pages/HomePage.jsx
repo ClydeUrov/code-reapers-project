@@ -1,6 +1,6 @@
 import main from '../icons/main.png';
 import image1 from '../icons/image1.png';
-// import byteArr from "../helpers/byte_arr.json";
+
 
 function Homepage() {
   // const byteImageArray = JSON.parse(byteArr.image);
@@ -12,7 +12,7 @@ function Homepage() {
   // const imageUrl = URL.createObjectURL(blob);
 
   return (
-    <main>
+    <main className='mx-auto'>
       {/* <img src={imageUrl} alt="Изображение" /> */}
       <div
         id="main"
@@ -30,6 +30,7 @@ function Homepage() {
             <h2 className="text-2xl mt-10 w-[520px]">
               Всі виручені кошти будуть передані на потреби ЗСУ
             </h2>
+
           </div>
           <div className="flex justify-self-end space-x-20 ml-40">
             <button className="border w-[280px] h-[70px] text-2xl rounded-3xl bg-gray-300 hover:bg-gray-400">
