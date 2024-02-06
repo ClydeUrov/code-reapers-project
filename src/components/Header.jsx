@@ -1,40 +1,27 @@
-import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import { useUserContext } from "../helpers/Context";
-import { setUserLS } from "../helpers/localStorage";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function Header() {
-  const { setUser, user } = useUserContext();
-  // console.log(user);
+  const { loginWithRedirect, logout, user, isLoading } = useAuth0();
 
-  const login = useGoogleLogin({
-    onSuccess: async (response) => {
-      try {
-        const res = await axios.get(
-          "https://www.googleapis.com/oauth2/v3/userinfo",
-          { headers: { Authorization: `Bearer ${response.access_token}` } }
-        );
-        setUser(res.data);
-        setUserLS(res.data);
-      } catch (error) {
-        console.error(error.message);
-      }
-    },
-    onError: () => {
-      console.log("Login failed");
-    },
-  });
   return (
     <header className="flex justify-between px-4 py-2">
       <h2>Picture</h2>
-      {user ? (
-        <img src={user.picture} alt={user.name[0]} className="h-12" />
-      ) : (
+      {!isLoading && !user && (
         <button
-          onClick={login}
+          onClick={() => {
+            loginWithRedirect();
+          }}
           className="rounded-full border-blue-400 border-2 px-4 py-2 border-solid"
         >
-          Login with google😜
+          Login
+        </button>
+      )}
+      {!isLoading && user && (
+        <button
+          onClick={() => logout()}
+          className="rounded-full border-blue-400 border-2 px-4 py-2 border-solid"
+        >
+          Logout
         </button>
       )}
     </header>

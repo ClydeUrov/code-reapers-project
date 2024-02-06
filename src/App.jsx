@@ -7,22 +7,18 @@ import Homepage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import AuctionPage from "./pages/AuctionPage";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import Auth0ProviderWithHistory from "./auth0Provider";
 
 function App() {
-  const [user, setUser] = useState(getUsetLS());
-  const clientId = "645813395347-6nr08m7bsffmdu5crv01lsr0lrlisr66.apps.googleusercontent.com";
-
   return (
-    <GoogleOAuthProvider clientId={clientId}>
-      <UserContext.Provider value={{ user, setUser }}>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Homepage />} />
-            <Route path="/profile" element={<UserPage />} />
-            <Route path="/auction/:auctionId" element={<AuctionPage />} />
-          </Route>
-        </Routes>
-      </UserContext.Provider>
+    <Auth0ProviderWithHistory>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Homepage />} />
+          <Route path="/profile" element={<UserPage />} />
+          <Route path="/auction/:auctionId" element={<AuctionPage />} />
+        </Route>
+      </Routes>
       {/* <ToastContainer
         autoClose={3000}
         position="top-center"
@@ -32,7 +28,7 @@ function App() {
           borderRadius: "2rem",
         }}
       /> */}
-    </GoogleOAuthProvider>
+    </Auth0ProviderWithHistory>
   );
 }
 
