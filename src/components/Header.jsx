@@ -5,7 +5,7 @@ import { setUserLS } from "../helpers/localStorage";
 
 function Header() {
   const { setUser, user } = useUserContext();
-  console.log(user);
+  // console.log(user);
 
   const login = useGoogleLogin({
     onSuccess: async (response) => {
@@ -26,7 +26,7 @@ function Header() {
   });
   return (
     <header className="flex justify-between px-4 py-2">
-      <h2>SOMETHING IN HEADER</h2>
+      <h2>Picture</h2>
       {user ? (
         <img src={user.picture} alt={user.name[0]} className="h-12" />
       ) : (
