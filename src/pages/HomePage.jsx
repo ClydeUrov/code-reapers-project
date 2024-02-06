@@ -42,29 +42,31 @@ function Homepage() {
           </div>
         </div>
       </div>
-      <div id="aboutUs" className="flex flex-col w-full items-center justify-center mt-32 ">
-        <h2 className="text-4xl m-2">Про нас</h2>
-        <p className="text-2xl my-10">
-          Ласкаво просимо на благодійний онлайн-аукціон! <br/>
-          Наша місія полягає в підтримці соціальних проектів та благочестивих ініціатив. 
-        </p>
-        <div className='flex'>
-          <div className='flex flex-col gap-8 mr-16 justify-center'>
-            <p className="text-2xl">
-              Ми створили цей аукціон, щоб збирати кошти для допомоги ЗСУ.
-            </p>
-            <p className="text-2xl">
-              Участь у наших аукціонах - це не тільки можливість отримати чудові товари 
-              та послуги, але й можливість змінити світ назавжди. Долучайтеся до нас у 
-              цьому благородному шляху допомоги та разом ми зможемо зробити більше для 
-              тих, хто потребує нашої підтримки. 
-            </p>
-            <p className='text-3xl ml-10'>Дякуємо, що обрали наш аукціон!</p>
+      <div className='mx-auto max-w-[1440px]'>
+        <div id="aboutUs" className="flex flex-col w-full items-center justify-center mt-32 ">
+          <h2 className="text-4xl m-2">Про нас</h2>
+          <p className="text-2xl my-10">
+            Ласкаво просимо на благодійний онлайн-аукціон! <br/>
+            Наша місія полягає в підтримці соціальних проектів та благочестивих ініціатив. 
+          </p>
+          <div className='flex'>
+            <div className='flex flex-col gap-8 mr-16 justify-center'>
+              <p className="text-2xl">
+                Ми створили цей аукціон, щоб збирати кошти для допомоги ЗСУ.
+              </p>
+              <p className="text-2xl">
+                Участь у наших аукціонах - це не тільки можливість отримати чудові товари 
+                та послуги, але й можливість змінити світ назавжди. Долучайтеся до нас у 
+                цьому благородному шляху допомоги та разом ми зможемо зробити більше для 
+                тих, хто потребує нашої підтримки. 
+              </p>
+              <p className='text-3xl ml-10'>Дякуємо, що обрали наш аукціон!</p>
+            </div>
+            <img className='w-[442px] h-[293px]' src={image1} alt="image1"/>
           </div>
-          <img className='w-[442px] h-[293px]' src={image1} alt="image1"/>
         </div>
+        <div id="auctions"></div>
       </div>
-      <div id="auctions"></div>
     </main>
   );
 }
