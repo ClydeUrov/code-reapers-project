@@ -2,7 +2,7 @@ import main from "../icons/main.png";
 
 function Homepage() {
   return (
-    <main className="h-[2000px]">
+    <main>
       <div
         id="main"
         className="h-full"
