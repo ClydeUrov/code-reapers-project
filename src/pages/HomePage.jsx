@@ -1,10 +1,8 @@
 import main from "../icons/main.png";
-import binaryImage from "../helpers/binary_image.json";
-import { useEffect, useState } from "react";
 
 function Homepage() {
   return (
-    <main>
+    <main className='mx-auto'>
       <div
         id="main"
         className="w-full h-[1024px] bg-cover"
@@ -21,6 +19,7 @@ function Homepage() {
             <h2 className="text-2xl mt-10 w-[520px]">
               Всі виручені кошти будуть передані на потреби ЗСУ
             </h2>
+
           </div>
           <div className="flex justify-self-end space-x-20 ml-40">
             <button className="border w-[280px] h-[70px] text-2xl rounded-3xl bg-gray-300 flex justify-center items-center">
