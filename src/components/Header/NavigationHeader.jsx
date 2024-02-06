@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { styledLi } from "../helpers/tailwindClasses";
+import { styledLi } from "../../helpers/tailwindClasses";
 
 function NavigationHeader() {
   return (
