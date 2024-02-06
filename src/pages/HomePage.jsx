@@ -1,9 +1,13 @@
-import main from '../icons/main.png';
+import main from "../icons/main.png";
 
 function Homepage() {
   return (
-    <main>
-      <div id="main" className="h-full" style={{backgroundImage: `url(${main})` }}>
+    <main className="h-[2000px]">
+      <div
+        id="main"
+        className="h-full"
+        style={{ backgroundImage: `url(${main})` }}
+      >
         <div>
           <div>
             <h1>Благодійний онлайн аукціон</h1>
@@ -15,13 +19,8 @@ function Homepage() {
           </div>
         </div>
       </div>
-      <div id="aboutUs">
-
-      </div>
-      <div id="auctions">
-
-      </div>
-
+      <div id="aboutUs"></div>
+      <div id="auctions"></div>
     </main>
   );
 }
