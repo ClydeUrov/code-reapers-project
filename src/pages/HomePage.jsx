@@ -1,27 +1,39 @@
-import main from '../icons/main.png';
+import main from "../icons/main.png";
+import binaryImage from "../helpers/binary_image.json";
+import { useEffect, useState } from "react";
 
 function Homepage() {
   return (
     <main>
-      <div id="main" className="w-full h-[1024px] bg-cover" style={{backgroundImage: `url(${main})` }}>
-        <div className='flex flex-col space-y-10 w-[650px] h-[700px] ml-40 place-content-around' >
-          <div>
-            <h1 className='text-6xl'>Благодійний онлайн аукціон</h1>
-            <h2 className='text-2xl mt-5'>Всі виручені кошти будуть передані на потреби ЗСУ</h2>
+      <div
+        id="main"
+        className="w-full h-[1024px] bg-cover"
+        style={{ backgroundImage: `url(${main})` }}
+      >
+        <div className="flex flex-col w-[850px] h-full justify-start items-start gap-20">
+          <div
+            className="flex flex-col items-center justify-center w-[850px] h-[680px] rounded-full"
+            style={{
+              background: "radial-gradient(#fff 1%, transparent 65%)",
+            }}
+          >
+            <h1 className="text-6xl w-[520px]">Благодійний онлайн-аукціон</h1>
+            <h2 className="text-2xl mt-10 w-[520px]">
+              Всі виручені кошти будуть передані на потреби ЗСУ
+            </h2>
           </div>
-          <div className='flex space-x-36 '>
-            <button className='px-10 py-2 border border-black rounded-3xl bg-slate-300'>Створити аукціон</button>
-            <button className='px-10 py-2 border border-black rounded-3xl bg-slate-300'>Перейти до лотів</button>
+          <div className="flex justify-self-end space-x-20 ml-40">
+            <button className="border w-[280px] h-[70px] text-2xl rounded-3xl bg-gray-300 flex justify-center items-center">
+              Створити аукціон
+            </button>
+            <button className="border w-[280px] h-[70px] text-2xl rounded-3xl bg-gray-300 flex justify-center items-center">
+              Перейти до лотів
+            </button>
           </div>
         </div>
       </div>
-      <div id="aboutUs">
-
-      </div>
-      <div id="auctions">
-
-      </div>
-
+      <div id="aboutUs"></div>
+      <div id="auctions"></div>
     </main>
   );
 }
