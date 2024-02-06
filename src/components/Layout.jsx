@@ -4,7 +4,7 @@ import Header from "./Header";
 
 function Layout() {
   return (
-    <div className="max-w-1440 overflow-x-hidden">
+    <div className="w-full overflow-x-hidden overflow-y-hidden">
       <Header />
       <Outlet />
       <Footer />
