@@ -1,12 +1,8 @@
 import { Route, Routes } from "react-router-dom";
-import { UserContext } from "./helpers/Context";
-import { useState } from "react";
-import { getUsetLS } from "./helpers/localStorage";
 import Layout from "./components/Layout";
 import Homepage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import AuctionPage from "./pages/AuctionPage";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Auth0ProviderWithHistory from "./auth0Provider";
 
 function App() {
