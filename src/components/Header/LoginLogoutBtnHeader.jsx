@@ -75,7 +75,7 @@ function LoginLogoutBtnHeader() {
 
         <ModalUserHeader
           modalRef={modalRef}
-          onShowModal={setShowModal}
+          setShowModal={setShowModal}
           showModal={showModal}
           onLogout={handleLogout}
         />
