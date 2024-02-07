@@ -26,7 +26,7 @@ const Footer = () => {
         <FaInstagramSquare className="text-3xl" />
         <FaTelegram className="text-3xl" />
 
-        <p className="text-lg">UA</p>
+        <p className="text-2xl font-bold">UA</p>
       </div>
     </div>
   )
