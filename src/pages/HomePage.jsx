@@ -1,18 +1,12 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
+import { MdOutlineUpdate, MdFilterList, MdSearch } from "react-icons/md";
+import auctions from "../helpers/auctions.json";
+import AuctionList from "../components/AuctionList";
 
 function Homepage() {
-  // const byteImageArray = JSON.parse(byteArr.image);
-
-  // // Преобразование массива байтов в Blob
-  // const blob = new Blob([new Uint8Array(byteImageArray)], { type: 'image/png' });
-
-  // // Создание URL-адреса из Blob
-  // const imageUrl = URL.createObjectURL(blob);
-
   return (
     <main className="mx-auto">
-      {/* <img src={imageUrl} alt="Изображение" /> */}
       <div
         id="main"
         className="h-[1024px] w-full bg-cover"
@@ -70,7 +64,30 @@ function Homepage() {
             <img className="h-[293px] w-[442px]" src={image1} alt="image1" />
           </div>
         </div>
-        <div id="auctions"></div>
+        <h2 className="mt-12 text-center text-5xl">Аукціони</h2>
+        <div id="auctions" className="mt-16 flex justify-around">
+          <ul className="flex w-1/5 flex-col gap-5">
+            <li className="flex items-center text-lg">
+              <MdSearch className="text-3xl" />
+              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
+                ПОШУК
+              </button>
+            </li>
+            <li className="flex items-center text-lg">
+              <MdOutlineUpdate className="text-3xl" />
+              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
+                ОНОВИТИ
+              </button>
+            </li>
+            <li className="flex items-center text-lg">
+              <MdFilterList className="text-3xl" />
+              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
+                ФІЛЬТР
+              </button>
+            </li>
+          </ul>
+          <AuctionList auctions={auctions} />
+        </div>
       </div>
     </main>
   );
