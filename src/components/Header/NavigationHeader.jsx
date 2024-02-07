@@ -24,7 +24,7 @@ function NavigationHeader() {
           <span onClick={() => scrollTo("#aboutUs")}>Про нас</span>
         </li>
         <li className={styledLi}>
-          <span>Аукціон</span>
+          <span onClick={() => scrollTo("#auctions-section")}>Аукціон</span>
         </li>
       </ul>
     </nav>

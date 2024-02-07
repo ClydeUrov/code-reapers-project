@@ -1,6 +1,6 @@
 const AuctionList = ({auctions}) => {
   return (
-    <div className="grid w-4/5 grid-cols-2 gap-8 ">
+    <div className="grid w-4/5 grid-cols-2 gap-8 " id="auctions-section">
       {auctions.map((item) => (
         <div
           key={item.id}
