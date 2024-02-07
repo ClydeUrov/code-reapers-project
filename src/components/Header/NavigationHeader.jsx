@@ -1,9 +1,7 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { styledLi } from "../../helpers/tailwindClasses";
 
 function NavigationHeader() {
-  const location = useLocation();
-  console.log(location);
   const navigate = useNavigate();
 
   function scrollTo(id) {
