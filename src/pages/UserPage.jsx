@@ -7,8 +7,7 @@ import { IoMdArrowBack } from "react-icons/io";
 import { styledLi } from "../helpers/tailwindClasses";
 import UserAuctionsList from "../components/UserAuctionsList";
 
-const corrUrl =
-  "http://ec2-16-170-239-71.eu-north-1.compute.amazonaws.com/auction/api/";
+const corrUrl = process.env.REACT_APP_API_URL;
 
 function UserPage() {
   const { user: userAuth0, logout } = useAuth0();
@@ -22,17 +21,16 @@ function UserPage() {
     setUserData(data);
   }
   const { data: fetchData, isLoading } = useAxiosFetch(
-    `users/email/${userAuth0?.email}`,
-    setUser,
+    `${corrUrl}users/email/${user?.email}`,
   );
 
   useEffect(() => {
     async function registerUserToApi() {
       return await axios
-        .post(`${corrUrl}add/user`, {
-          name: userAuth0?.name,
-          email: userAuth0?.email,
-          photoURL: userAuth0?.picture,
+        .post(`${corrUrl}users/add/user`, {
+          name: user?.name,
+          email: user?.email,
+          photoURL: user?.picture,
         })
         .then((response) => {
           return response.data;
