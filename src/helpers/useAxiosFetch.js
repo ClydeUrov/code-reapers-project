@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const corrUrl =
-  "http://ec2-16-170-239-71.eu-north-1.compute.amazonaws.com/auction/api/";
+const corrUrl = process.env.REACT_APP_API_URL;
 
 const useAxiosFetch = (dataUrl, setFunction = () => {}) => {
-  const [data, setData] = useState([]);
   const [fetchError, setFetchError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const source = axios.CancelToken.source();
@@ -20,12 +18,11 @@ const useAxiosFetch = (dataUrl, setFunction = () => {}) => {
           cancelToken: source.token,
         });
 
-        setData(response.data);
         setFunction(response.data);
         setFetchError(null);
       } catch (err) {
+        setFunction([]);
         setFetchError(err);
-        setData([]);
       } finally {
         setIsLoading(false);
       }
@@ -40,7 +37,7 @@ const useAxiosFetch = (dataUrl, setFunction = () => {}) => {
     return cleanUp;
   }, [dataUrl]);
 
-  return { data, fetchError, isLoading };
+  return { fetchError, isLoading };
 };
 
 export default useAxiosFetch;

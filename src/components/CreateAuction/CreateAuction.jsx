@@ -129,7 +129,10 @@ const CreateAuction = ({ closeModal, auction }) => {
             {auction ? "Оновити лот" : "Опублікувати лот"}
           </button>
         </div>
-        <ImageList images={images} handleImageChangeOrDrop={handleImageChangeOrDrop} />
+        <ImageList
+          images={images}
+          handleImageChangeOrDrop={handleImageChangeOrDrop}
+        />
       </form>
       <p className="mb-4 text-right text-gray-600">
         Перше фото буде на обкладинці лота. <br />

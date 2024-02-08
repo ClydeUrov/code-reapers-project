@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import useAxiosFetch from "../helpers/useAxiosFetch";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { setUserLS } from "../helpers/localStorage";
 import { IoMdArrowBack } from "react-icons/io";
@@ -11,20 +11,22 @@ const corrUrl = process.env.REACT_APP_API_URL;
 
 function UserPage() {
   const { user: userAuth0, logout } = useAuth0();
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState([]);
+  const [lots, setLots] = useState([]);
   const [{ myBetsOpen, myLostOpen }, setOpenPage] = useState({
     myLostOpen: true,
     myBetsOpen: false,
   });
-  function setUser(data) {
-    setUserLS(data);
-    setUserData(data);
-  }
   const { data: fetchData, isLoading } = useAxiosFetch(
-    `${corrUrl}users/email/${userAuth0?.email}`,
+    `users/email/${userAuth0?.email}`,
+    setUser,
+  );
+  const { isLoading: lotsIsLoading } = useAxiosFetch(
+    `auctions/createdBy/${userAuth0?.email}`,
+    setLots,
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     async function registerUserToApi() {
       return await axios
         .post(`${corrUrl}users/add/user`, {
@@ -41,13 +43,16 @@ function UserPage() {
         .catch((err) => console.log(err));
     }
 
-    if (!fetchData?.id && !isLoading) registerUserToApi();
+    console.log();
+
+    if (!fetchData?.id && !isLoading && !userData?.id) registerUserToApi();
   }, [
     userAuth0?.name,
     userAuth0?.picture,
     userAuth0?.email,
     isLoading,
     fetchData?.id,
+    userData?.id,
   ]);
 
   const handleLogout = () => {
@@ -57,7 +62,10 @@ function UserPage() {
       },
     });
   };
-  console.log(userData);
+  function setUser(data) {
+    setUserLS(data);
+    setUserData(data);
+  }
 
   if (!userData || isLoading) return <h2>Loading...</h2>;
 
@@ -95,7 +103,7 @@ function UserPage() {
         </section>
       </article>
       <div className="mt-6 flex justify-end">
-        <button className="mt-8 rounded-full bg-gray-900/[0.5] px-6 py-2 text-2xl text-gray-50 hover:bg-gray-900/[0.65]">
+        <button className="mr-6 mt-8 rounded-full bg-gray-900/[0.5] px-6 py-2 text-2xl text-gray-50 hover:bg-gray-900/[0.65]">
           Перейти до лотів
         </button>
       </div>
@@ -122,7 +130,9 @@ function UserPage() {
           </button>
         </div>
       </section>
-      <UserAuctionsList type={"lots"} />
+      <section className="flex w-full justify-center">
+        <UserAuctionsList type={"lots"} data={lots} isLoading={lotsIsLoading} />
+      </section>
     </main>
   );
 }

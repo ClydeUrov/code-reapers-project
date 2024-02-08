@@ -1,58 +1,25 @@
-import { getUserLS } from "../helpers/localStorage";
-import useAxiosFetch from "../helpers/useAxiosFetch";
+import getImage from "../helpers/bitToImg";
 
-function UserAuctionsList({ type }) {
-  const user = getUserLS();
-  console.log(user);
-  const { data, isLoading } = useAxiosFetch(
-    type === "lots" && `auctions/2`,
-    // type === "lots" && `auctions/createdBy/${user.email}`,
-  );
-  console.log(data);
-
-  if (isLoading) return <h3>Loading...</h3>;
-
+function UserAuctionsList({ type, data = [], isLoading }) {
   return (
-    <div className="grid w-full grid-cols-3 px-8 py-6">
-      <section className="flex w-80 flex-col items-center gap-4 border-2 border-solid px-4 py-6">
-        <h4 className="mb-4 font-medium">Поштові марки ''Русскій...</h4>
-        <img
-          src=""
-          alt=""
-          className="h-32 w-52 rounded-lg border-2 border-solid object-fill"
-        />
-        <p className="text-sm font-normal">Стартова ціна: 25 000 грн</p>
-        <p className="text-sm font-normal">
-          Дата проведення аукціону: 22лютого, 14:00
-        </p>
-        <p className="text-sm font-normal">Кількість учасників</p>
-      </section>
-      <section className="flex w-80 flex-col items-center gap-4 border-2 border-solid px-4 py-6">
-        <h4 className="mb-4 font-medium">Поштові марки ''Русскій...</h4>
-        <img
-          src=""
-          alt=""
-          className="h-32 w-52 rounded-lg border-2 border-solid object-fill"
-        />
-        <p className="text-sm font-normal">Стартова ціна: 25 000 грн</p>
-        <p className="text-sm font-normal">
-          Дата проведення аукціону: 22лютого, 14:00
-        </p>
-        <p className="text-sm font-normal">Кількість учасників</p>
-      </section>
-      <section className="flex w-80 flex-col items-center gap-4 border-2 border-solid px-4 py-6">
-        <h4 className="mb-4 font-medium">Поштові марки ''Русскій...</h4>
-        <img
-          src=""
-          alt=""
-          className="h-32 w-52 rounded-lg border-2 border-solid object-fill"
-        />
-        <p className="text-sm font-normal">Стартова ціна: 25 000 грн</p>
-        <p className="text-sm font-normal">
-          Дата проведення аукціону: 22лютого, 14:00
-        </p>
-        <p className="text-sm font-normal">Кількість учасників</p>
-      </section>
+    <div className="grid w-full grid-cols-3 gap-y-8 px-8 py-6">
+      {data.map((el) => (
+        <div className="flex w-full items-center justify-center" key={el.id}>
+          <section className="flex h-80 w-80 flex-col items-center gap-2 border-2 border-solid px-4 py-6 [&>p]:break-normal [&>p]:text-sm [&>p]:font-normal ">
+            <h4 className="text-l mb-2 font-medium">{el.title}</h4>
+            {el.photos.length > 0 && (
+              <img
+                src={getImage(el.photos[0].image)}
+                alt=""
+                className="h-32 w-52 rounded-lg border-2 border-solid object-fill"
+              />
+            )}
+            <p>Стартова ціна: {el.startPrice} грн</p>
+            <p>Дата проведення аукціону: 22лютого, 14:00</p>
+            <p>Кількість учасників</p>
+          </section>
+        </div>
+      ))}
     </div>
   );
 }
