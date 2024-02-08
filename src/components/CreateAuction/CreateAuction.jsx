@@ -1,26 +1,31 @@
 import { useState } from "react";
 import { AiOutlinePicture, AiOutlineDelete } from "react-icons/ai";
-import { postAuction, postAuctionImages } from "../helpers/api";
+import { postAuction, postAuctionImages } from "../../helpers/api";
+import { getUserLS } from "../../helpers/localStorage";
+import { toast } from "react-toastify";
+import getImage from "../../helpers/bitToImg";
+import ImageList from "./ImageList";
 
-const CreateAuction = ({closeModal}) => {
-  const [images, setImages] = useState([]);
+const CreateAuction = ({ closeModal, auction }) => {
+  const [images, setImages] = useState(
+    auction?.photos.length > 0
+      ? auction.photos.map((item) => getImage(item.image))
+      : [],
+  );
   const [formData, setFormData] = useState({
-    lotName: '',
-    startPrice: '',
-    auctionTime: '',
-    description: '',
+    title: auction?.title ?? "",
+    startPrice: auction?.startPrice ?? "",
+    startTime: auction?.startTime ?? "",
+    description: auction?.description ?? "",
   });
-  const formImages = new FormData();
-  const user = getUser();
+  const [file, setFile] = useState([]);
+  const { email } = getUserLS();
 
   const handleImageChangeOrDrop = async (e, index) => {
-    console.log(e.target?.files, e.dataTransfer?.files)
     const file = e.target.files?.[0] ?? e.dataTransfer.files?.[0];
 
     if (file) {
-      console.log("file", file);
-      
-      formImages.append("images", file);
+      setFile((prevFile) => [...prevFile, file]);
 
       try {
         const newImages = [...images];
@@ -42,19 +47,32 @@ const CreateAuction = ({closeModal}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const auction = await postAuction(user.email, formData);
-    if(formImages) {
-      await postAuctionImages(auction.id, formImages);
+    try {
+      const auction = await toast.promise(
+        postAuction({ userEmail: email, data: formData }),
+        {
+          pending: "Request in progress",
+          success: "Auction created successfully!",
+          error: "Auction was not created",
+        },
+      );
+      if (images.length > 0) {
+        const formImages = new FormData();
+        file.forEach((item) => {
+          formImages.append("image", item);
+        });
+        await postAuctionImages({ auctionId: auction, data: formImages });
+      }
+    } catch (e) {
+      console.log(e);
     }
-    
-    console.log(formData);
-    console.log(images);
-    // closeModal()
-  }
+
+    closeModal();
+  };
 
   return (
     <div>
-      <h2 className="mt-10 mb-4 text-center text-[40px]">Створення аукціону</h2>
+      <h2 className="mb-4 mt-10 text-center text-[40px]">Створення аукціону</h2>
       <form className="flex gap-5" onSubmit={handleSubmit}>
         <div className="w-1/2">
           <div className="mb-4">
@@ -85,9 +103,9 @@ const CreateAuction = ({closeModal}) => {
             <input
               type="datetime-local"
               placeholder="Початок аукціону"
-              id="auctionTime"
-              name="auctionTime"
-              value={formData.auctionTime}
+              id="startTime"
+              name="startTime"
+              value={formData.startTime}
               onChange={handleChange}
               className="w-full rounded-[18px] border border-gray-300 p-3"
               required
@@ -107,51 +125,13 @@ const CreateAuction = ({closeModal}) => {
           <button
             type="submit"
             className="rounded-[18px] bg-gray-400 px-8 py-3 text-2xl text-white hover:bg-gray-500"
-            // onClick={() => closeModal()}
           >
-            Опублікувати лот
+            {auction ? "Оновити лот" : "Опублікувати лот"}
           </button>
         </div>
-        <div className="grid w-1/2 grid-cols-2 gap-4">
-          {[...Array(4)].map((_, index) => (
-            <section key={index} className="flex items-center justify-center">
-              <div
-                onDrop={(e) => {
-                  e.preventDefault();
-                  handleImageChangeOrDrop(e, index);
-                }}
-                onDragOver={(e) => e.preventDefault()}
-              >
-                <label
-                  htmlFor={`fileInput${index}`}
-                  className="flex h-40 w-40 cursor-pointer items-center justify-center rounded-lg border border-gray-300"
-                >
-                  {images[index] ? (
-                    <img src={images[index]} alt="Uploaded" />
-                  ) : index === 0 ? (
-                    <p className="text-gray-400">Додати фото</p>
-                  ) : (
-                    <AiOutlinePicture className="cursor-pointer text-8xl text-gray-200" />
-                  )}
-                </label>
-                <input
-                  id={`fileInput${index}`}
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChangeOrDrop(e, index)}
-                  style={{ display: "none" }}
-                />
-                {images[index] ? (
-                  <div className="" onClick={() => {}}>
-                    <AiOutlineDelete />
-                  </div>
-                ) : null}
-              </div>
-            </section>
-          ))}
-        </div>
+        <ImageList images={images} handleImageChangeOrDrop={handleImageChangeOrDrop} />
       </form>
-      <p className="text-right text-gray-600 mb-4">
+      <p className="mb-4 text-right text-gray-600">
         Перше фото буде на обкладинці лота. <br />
         Перетягніть, щоб змінити порядок фото
       </p>

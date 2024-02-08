@@ -1,14 +1,26 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
 import { MdOutlineUpdate, MdFilterList, MdSearch } from "react-icons/md";
-import auctions from "../helpers/auctions.json";
+// import auctions from "../helpers/auctions.json";
 import AuctionList from "../components/AuctionList";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
-import CreateAuction from "../components/CreateAuction";
+import CreateAuction from "../components/CreateAuction/CreateAuction";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAllAuctions } from "../helpers/api";
 
 function Homepage() {
+  const [auctions, setAuctions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { loginWithRedirect, user } = useAuth0();
+
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: {
+        returnTo: "/profile",
+      },
+    });
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -17,6 +29,19 @@ function Homepage() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  const fetchData = useCallback(async () => {
+    try {
+        const data = await getAllAuctions();
+        setAuctions(data);
+    } catch (error) {
+        console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <main className="mx-auto">
@@ -40,7 +65,7 @@ function Homepage() {
           <div className="ml-40 flex space-x-20 justify-self-end">
             <button
               className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400"
-              onClick={openModal}
+              onClick={user ? openModal : handleLogin}
             >
               Створити аукціон
             </button>
