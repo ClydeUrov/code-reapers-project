@@ -3,8 +3,21 @@ import image1 from "../icons/image1.png";
 import { MdOutlineUpdate, MdFilterList, MdSearch } from "react-icons/md";
 import auctions from "../helpers/auctions.json";
 import AuctionList from "../components/AuctionList";
+import { useState } from "react";
+import { RxCross1 } from "react-icons/rx";
+import CreateAuction from "../components/CreateAuction";
 
 function Homepage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <main className="mx-auto">
       <div
@@ -25,7 +38,10 @@ function Homepage() {
             </h2>
           </div>
           <div className="ml-40 flex space-x-20 justify-self-end">
-            <button className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400">
+            <button
+              className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400"
+              onClick={openModal}
+            >
               Створити аукціон
             </button>
             <button className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400">
@@ -62,24 +78,24 @@ function Homepage() {
             <img className="h-[293px] w-[442px]" src={image1} alt="image1" />
           </div>
         </div>
-        <h2 className="text-center text-5xl mt-12">Аукціони</h2>
+        <h2 className="mt-12 text-center text-5xl">Аукціони</h2>
         <div id="auctions" className="mt-16 flex justify-around">
           <ul className="flex w-1/5 flex-col gap-5">
             <li className="flex items-center text-lg">
               <MdSearch className="text-3xl" />
-              <button className="ml-2 w-40 rounded-full border border-gray-400 text-gray-400 px-2 py-1">
+              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
                 ПОШУК
               </button>
             </li>
             <li className="flex items-center text-lg">
               <MdOutlineUpdate className="text-3xl" />
-              <button className="ml-2 w-40 rounded-full border border-gray-400 text-gray-400 px-2 py-1">
+              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
                 ОНОВИТИ
               </button>
             </li>
             <li className="flex items-center text-lg">
               <MdFilterList className="text-3xl" />
-              <button className="ml-2 w-40 rounded-full border border-gray-400 text-gray-400 px-2 py-1">
+              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
                 ФІЛЬТР
               </button>
             </li>
@@ -87,6 +103,19 @@ function Homepage() {
           <AuctionList auctions={auctions} />
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="relative min-h-[595px] max-h-[700px] w-[1000px] rounded-lg bg-white px-16 py-3">
+            <button
+              onClick={closeModal}
+              className="absolute right-3 top-3 rounded-full p-2 text-slate-600 hover:text-black"
+            >
+              <RxCross1 className="text-2xl" />
+            </button>
+            <CreateAuction closeModal={closeModal} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }

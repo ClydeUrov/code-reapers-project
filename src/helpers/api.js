@@ -16,3 +16,16 @@ export const getAllAuctions = async () => {
     .catch((err) => console.log(err));
 }
 
+export const postAuction = async ({userEmail, data}) => {
+  return await axios
+    .post(`auctions/create/${userEmail}`, data)
+    .then((response) => response.data)
+    .catch((err) => console.log(err));
+}
+
+export const postAuctionImages = async ({auctionId, data}) => {
+  return await axios
+    .post(`images/upload/image/${auctionId}`, data)
+    .then((response) => response.data)
+    .catch((err) => console.log(err));
+}
