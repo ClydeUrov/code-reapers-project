@@ -2,24 +2,30 @@ import { useAuth0 } from "@auth0/auth0-react";
 import useAxiosFetch from "../helpers/useAxiosFetch";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { setUserLS } from "../helpers/localStorage";
 
 const corrUrl =
-  "http://ec2-16-171-11-143.eu-north-1.compute.amazonaws.com/auction/api/users/";
+  "http://ec2-16-170-239-71.eu-north-1.compute.amazonaws.com/auction/api/";
 
 function UserPage() {
-  const { user } = useAuth0();
-  const { data: fetchData, isLoading } = useAxiosFetch(
-    `${corrUrl}email/${user?.email}`,
-  );
+  const { user: userAuth0 } = useAuth0();
   const [userData, setUserData] = useState();
+  function setUser(data) {
+    setUserLS(data);
+    setUserData(data);
+  }
+  const { data: fetchData, isLoading } = useAxiosFetch(
+    `users/email/${userAuth0?.email}`,
+    setUser,
+  );
 
   useEffect(() => {
     async function registerUserToApi() {
       return await axios
         .post(`${corrUrl}add/user`, {
-          name: user?.name,
-          email: user?.email,
-          photoURL: user?.picture,
+          name: userAuth0?.name,
+          email: userAuth0?.email,
+          photoURL: userAuth0?.picture,
         })
         .then((response) => {
           return response.data;
@@ -29,9 +35,15 @@ function UserPage() {
 
     if (!fetchData?.id && !isLoading)
       registerUserToApi().then((data) => {
-        setUserData(data);
+        setUser(data);
       });
-  }, [user?.name, user?.picture, user?.email, isLoading, fetchData?.id]);
+  }, [
+    userAuth0?.name,
+    userAuth0?.picture,
+    userAuth0?.email,
+    isLoading,
+    fetchData?.id,
+  ]);
 
   return <div>USER PAGE</div>;
 }
