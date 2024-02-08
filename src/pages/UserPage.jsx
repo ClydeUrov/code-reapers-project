@@ -21,16 +21,16 @@ function UserPage() {
     setUserData(data);
   }
   const { data: fetchData, isLoading } = useAxiosFetch(
-    `${corrUrl}users/email/${user?.email}`,
+    `${corrUrl}users/email/${userAuth0?.email}`,
   );
 
   useEffect(() => {
     async function registerUserToApi() {
       return await axios
         .post(`${corrUrl}users/add/user`, {
-          name: user?.name,
-          email: user?.email,
-          photoURL: user?.picture,
+          name: userAuth0?.name,
+          email: userAuth0?.email,
+          photoURL: userAuth0?.picture,
         })
         .then((response) => {
           return response.data;
