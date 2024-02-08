@@ -1,10 +1,48 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
 import { MdOutlineUpdate, MdFilterList, MdSearch } from "react-icons/md";
-import auctions from "../helpers/auctions.json";
+// import auctions from "../helpers/auctions.json";
 import AuctionList from "../components/AuctionList";
+import { useCallback, useEffect, useState } from "react";
+import { RxCross1 } from "react-icons/rx";
+import CreateAuction from "../components/CreateAuction/CreateAuction";
+import { useAuth0 } from "@auth0/auth0-react";
+import { getAllAuctions } from "../helpers/api";
 
 function Homepage() {
+  const [auctions, setAuctions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { loginWithRedirect, user } = useAuth0();
+
+  const handleLogin = async () => {
+    await loginWithRedirect({
+      appState: {
+        returnTo: "/profile",
+      },
+    });
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const fetchData = useCallback(async () => {
+    try {
+        const data = await getAllAuctions();
+        setAuctions(data);
+    } catch (error) {
+        console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
     <main className="mx-auto">
       <div
@@ -25,7 +63,10 @@ function Homepage() {
             </h2>
           </div>
           <div className="ml-40 flex space-x-20 justify-self-end">
-            <button className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400">
+            <button
+              className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400"
+              onClick={user ? openModal : handleLogin}
+            >
               Створити аукціон
             </button>
             <button className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400">
@@ -89,6 +130,19 @@ function Homepage() {
           <AuctionList auctions={auctions} />
         </div>
       </div>
+      {isModalOpen && (
+        <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="relative min-h-[595px] max-h-[700px] w-[1000px] rounded-lg bg-white px-16 py-3">
+            <button
+              onClick={closeModal}
+              className="absolute right-3 top-3 rounded-full p-2 text-slate-600 hover:text-black"
+            >
+              <RxCross1 className="text-2xl" />
+            </button>
+            <CreateAuction closeModal={closeModal} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }

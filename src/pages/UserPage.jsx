@@ -3,20 +3,19 @@ import useAxiosFetch from "../helpers/useAxiosFetch";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const corrUrl =
-  "http://ec2-16-171-11-143.eu-north-1.compute.amazonaws.com/auction/api/users/";
+const corrUrl = process.env.REACT_APP_API_URL;
 
 function UserPage() {
   const { user } = useAuth0();
   const { data: fetchData, isLoading } = useAxiosFetch(
-    `${corrUrl}email/${user?.email}`,
+    `${corrUrl}users/email/${user?.email}`,
   );
   const [userData, setUserData] = useState();
 
   useEffect(() => {
     async function registerUserToApi() {
       return await axios
-        .post(`${corrUrl}add/user`, {
+        .post(`${corrUrl}users/add/user`, {
           name: user?.name,
           email: user?.email,
           photoURL: user?.picture,
