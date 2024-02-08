@@ -55,7 +55,9 @@ function Homepage() {
           id="aboutUs"
           className="mt-32 flex w-full flex-col items-center justify-center "
         >
-          <h2 className="m-2 text-4xl">Про нас</h2>
+          <h2 className="m-2 text-4xl" id="aboutUS">
+            Про нас
+          </h2>
           <p className="my-10 text-2xl">
             Ласкаво просимо на благодійний онлайн-аукціон! <br />
             Наша місія полягає в підтримці соціальних проектів та благочестивих
