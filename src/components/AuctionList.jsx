@@ -8,12 +8,14 @@ const AuctionList = ({auctions}) => {
           key={item.id}
           className="rounded-lg border border-gray-300 bg-gray-100 p-4 flex flex-col justify-center items-center cursor-pointer"
         >
-          <h3 className="text-lg font-semibold">{item.title}</h3>
+          <h3 className="text-2xl font-semibold mb-2">
+            {item.title.length > 25 ? `${item.title.substring(0, 25)}...` : item.title}
+          </h3>
           {item.photos.length > 0 && (
             <img
               src={getImage(item.photos[0].image)}
               alt={item.id}
-              className="mt-2 h-56 w-96 object-cover mx-auto rounded-lg"
+              className="mt-2 h-52 w-80 object-cover mx-auto rounded-lg"
             />
           )}
           <p className="mt-2">Стартова ціна: {item.startPrice} грн</p>

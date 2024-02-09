@@ -43,6 +43,14 @@ function Homepage() {
     fetchData();
   }, [fetchData]);
 
+  function scrollTo(id) {
+    if (document.querySelector(id)) {
+      document
+        .querySelector(id)
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   return (
     <main className="mx-auto">
       <div
@@ -69,7 +77,10 @@ function Homepage() {
             >
               Створити аукціон
             </button>
-            <button className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400">
+            <button 
+              className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400"
+              onClick={() => scrollTo("#auctions")}
+            >
               Перейти до лотів
             </button>
           </div>
@@ -116,7 +127,10 @@ function Homepage() {
             </li>
             <li className="flex items-center text-lg">
               <MdOutlineUpdate className="text-3xl" />
-              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
+              <button 
+                className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
+                onClick={() => fetchData()}
+              >
                 ОНОВИТИ
               </button>
             </li>

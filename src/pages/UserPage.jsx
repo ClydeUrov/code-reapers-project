@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const corrUrl = process.env.REACT_APP_API_URL;
+const corrWSUrl = process.env.REACT_APP_WS_URL;
 
 function UserPage() {
   const { user } = useAuth0();

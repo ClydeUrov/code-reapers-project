@@ -18,14 +18,14 @@ const CreateAuction = ({ closeModal, auction }) => {
     startTime: auction?.startTime ?? "",
     description: auction?.description ?? "",
   });
-  const [file, setFile] = useState([]);
+  const [imgFiles, setImgFiles] = useState([]);
   const { email } = getUserLS();
 
   const handleImageChangeOrDrop = async (e, index) => {
     const file = e.target.files?.[0] ?? e.dataTransfer.files?.[0];
 
     if (file) {
-      setFile((prevFile) => [...prevFile, file]);
+      setImgFiles((prevFile) => [...prevFile, file]);
 
       try {
         const newImages = [...images];
@@ -48,7 +48,12 @@ const CreateAuction = ({ closeModal, auction }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const auction = await toast.promise(
+      let auctionId;
+      if (auction) {
+        formData.id = auction.id;
+      }
+
+      auctionId = await toast.promise(
         postAuction({ userEmail: email, data: formData }),
         {
           pending: "Request in progress",
@@ -56,12 +61,13 @@ const CreateAuction = ({ closeModal, auction }) => {
           error: "Auction was not created",
         },
       );
+
       if (images.length > 0) {
         const formImages = new FormData();
-        file.forEach((item) => {
+        imgFiles.forEach((item) => {
           formImages.append("image", item);
         });
-        await postAuctionImages({ auctionId: auction, data: formImages });
+        await postAuctionImages({ auctionId: auctionId, data: formImages });
       }
     } catch (e) {
       console.log(e);
@@ -72,7 +78,7 @@ const CreateAuction = ({ closeModal, auction }) => {
 
   return (
     <div>
-      <h2 className="mb-4 mt-10 text-center text-[40px]">Створення аукціону</h2>
+      <h2 className="mb-4 mt-10 text-center text-[40px]">{auction ? "Оновлення аукціону" : "Створення аукціону"}</h2>
       <form className="flex gap-5" onSubmit={handleSubmit}>
         <div className="w-1/2">
           <div className="mb-4">
@@ -129,7 +135,10 @@ const CreateAuction = ({ closeModal, auction }) => {
             {auction ? "Оновити лот" : "Опублікувати лот"}
           </button>
         </div>
-        <ImageList images={images} handleImageChangeOrDrop={handleImageChangeOrDrop} />
+        <ImageList
+          images={images}
+          handleImageChangeOrDrop={handleImageChangeOrDrop}
+        />
       </form>
       <p className="mb-4 text-right text-gray-600">
         Перше фото буде на обкладинці лота. <br />
