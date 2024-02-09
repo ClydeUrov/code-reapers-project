@@ -22,13 +22,15 @@ function UserPage() {
     `users/email/${userAuth0?.email}`,
   );
 
+  console.log(userAuth0);
+
   useEffect(() => {
     async function registerUserToApi() {
       return await axios
         .post(`${corrUrl}users/add/user`, {
-          name: "asdasdasd",
-          email: "asdasd@gmail.com",
-          photoURL: "asdasdasd.com",
+          name: userAuth0?.name,
+          email: userAuth0?.email,
+          photoURL: userAuth0?.picture,
         })
         .then((response) => {
           return response.data;
