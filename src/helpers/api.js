@@ -24,6 +24,13 @@ export const postAuction = async ({ userEmail, data }) => {
     .catch((err) => console.log(err));
 };
 
+export const updateAuction = async ({ data }) => {
+  return await axios
+    .post(`auctions/update`, data)
+    .then((response) => response.data)
+    .catch((err) => console.log(err));
+};
+
 export const postAuctionImages = async ({ auctionId, data }) => {
   console.log("dataImage", data);
   for (const entry of data.entries()) {
