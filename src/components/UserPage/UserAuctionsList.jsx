@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import getImage from "../../helpers/bitToImg";
 import { getUserLS } from "../../helpers/localStorage";
 import useAxiosFetch from "../../helpers/useAxiosFetch";
+import { useNavigate } from "react-router";
 
 function UserAuctionsList({ type }) {
   const user = getUserLS();
+  const navigate = useNavigate();
   const { data: dataFromApi, isLoading } = useAxiosFetch(
     `auctions/createdBy/${user?.email}`,
   );
@@ -29,7 +31,10 @@ function UserAuctionsList({ type }) {
                 <button className="w-3/5 rounded-full bg-slate-900/80 py-2 text-slate-50 hover:bg-slate-800/90">
                   Редагувати лот
                 </button>
-                <button className="w-3/5 rounded-full  bg-gray-300/80 py-2 text-slate-50 hover:bg-gray-200/90">
+                <button
+                  className="w-3/5 rounded-full  bg-gray-300/80 py-2 text-slate-50 hover:bg-gray-200/90"
+                  onClick={() => navigate(`../auction/${el.id}`)}
+                >
                   Переглянути лот
                 </button>
               </div>

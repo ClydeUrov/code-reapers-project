@@ -7,14 +7,8 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
-function SwiperAuctions({ mainImage }) {
-  const images = [
-    "https://swiperjs.com/demos/images/nature-1.jpg",
-    "https://swiperjs.com/demos/images/nature-2.jpg",
-    "https://swiperjs.com/demos/images/nature-3.jpg",
-    "https://swiperjs.com/demos/images/nature-4.jpg",
-  ];
 
+function SwiperAuctions({ mainImage, images }) {
   const swiper1Ref = useRef(null);
   const swiper2Ref = useRef(null);
 
@@ -28,54 +22,68 @@ function SwiperAuctions({ mainImage }) {
     swiper2Ref.current.swiper.slidePrev();
   }
 
+  if (!images) return <h2>Error</h2>;
+
   return (
     <>
-      <div className="flex w-fit gap-4 ">
+      <div className="relative flex w-full flex-col gap-4 ">
         <div className="flex flex-col items-center justify-around">
           <Swiper
-            className="h-64 w-64"
+            className="h-[54dvh] w-full"
             ref={swiper1Ref}
             loop={true}
             modules={[FreeMode, Thumbs]}
           >
             {images?.map((item, i) => {
               return (
-                <SwiperSlide key={i}>
-                  <img src={item} alt={i + 1} className="h-64 w-64" />
+                <SwiperSlide key={item.id} data-number={i}>
+                  <img
+                    src={item.image}
+                    alt={i + 1}
+                    className="h-full w-full object-fill"
+                  />
                 </SwiperSlide>
               );
             })}
           </Swiper>
-          <div className=" relative bottom-[8.5rem] z-10 flex w-full justify-between px-4 ">
+          <div className=" absolute top-[25dvh] z-10 flex w-full justify-between px-4 ">
             <button type="button" onClick={handleNextSlide}>
               <FaArrowLeft
-                size={20}
+                size={32}
                 className="text-gray-100 opacity-50 hover:rounded-full hover:bg-gray-200/[0.5] hover:bg-gray-50 hover:opacity-100"
               />
             </button>
-            <button type="button" onClick={handlePrevSlide}>
+            <button
+              type="button"
+              className=" p-2 hover:rounded-full hover:bg-gray-50/50"
+              onClick={handlePrevSlide}
+            >
               <FaArrowRight
-                size={20}
-                className="text-gray-100 opacity-50 hover:rounded-full hover:bg-gray-200/[0.5] hover:bg-gray-50 hover:opacity-100"
+                size={32}
+                className="text-gray-100 opacity-70 hover:text-gray-100/90  "
               />
             </button>
           </div>
         </div>
         <Swiper
           ref={swiper2Ref}
-          className="h-64 w-20"
-          direction="vertical"
+          className="w-full"
+          // direction="horizontal"
           loop={true}
           spaceBetween={16}
           slidesPerView={3}
-          freeMode={true}
-          watchSlidesProgress={true}
+          // freeMode={true}
+          // watchSlidesProgress={true}
           modules={[FreeMode, Thumbs]}
         >
           {[...images.slice(1), images[0]]?.map((item, i) => {
             return (
-              <SwiperSlide key={i} onClick={(e) => console.log(e)}>
-                <img src={item} alt={i + 1} className="h-20 w-20" />
+              <SwiperSlide key={item.id}>
+                <img
+                  src={item.image}
+                  alt={i + 1}
+                  className="h-[14dvh] w-full  object-fill"
+                />
               </SwiperSlide>
             );
           })}
