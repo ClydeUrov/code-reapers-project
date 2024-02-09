@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useRef, useState } from "react";
 import { FaRegUser } from "react-icons/fa6";
 import ModalUserHeader from "./ModalUserHeader";
+import { removeUserLS } from "../../helpers/localStorage";
 
 function LoginLogoutBtnHeader() {
   const { loginWithRedirect, logout, user, isLoading } = useAuth0();
@@ -36,6 +37,7 @@ function LoginLogoutBtnHeader() {
   };
 
   const handleLogout = () => {
+    removeUserLS();
     logout({
       logoutParams: {
         returnTo: window.location.origin,

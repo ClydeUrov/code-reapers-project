@@ -1,13 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 const corrUrl = process.env.REACT_APP_API_URL;
 
-const useAxiosFetch = (dataUrl, setFunction = () => {}) => {
+const useAxiosFetch = (dataUrl) => {
+  const [data, setData] = useState([]);
   const [fetchError, setFetchError] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
     const source = axios.CancelToken.source();
 
     const fetchData = async (url) => {
@@ -17,27 +19,33 @@ const useAxiosFetch = (dataUrl, setFunction = () => {}) => {
         const response = await axios.get(corrUrl + url, {
           cancelToken: source.token,
         });
-
-        setFunction(response.data);
-        setFetchError(null);
+        if (isMounted) {
+          setData(response.data);
+          setFetchError(null);
+        }
       } catch (err) {
-        setFunction([]);
-        setFetchError(err);
+        if (isMounted) {
+          setData([]);
+          setFetchError(err);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          isMounted && setIsLoading(false);
+        }
       }
     };
 
     fetchData(dataUrl);
 
     const cleanUp = () => {
+      isMounted = false;
       source.cancel();
     };
 
     return cleanUp;
   }, [dataUrl]);
 
-  return { fetchError, isLoading };
+  return { fetchError, isLoading, data };
 };
 
 export default useAxiosFetch;

@@ -1,38 +1,33 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import useAxiosFetch from "../helpers/useAxiosFetch";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { setUserLS } from "../helpers/localStorage";
+import { removeUserLS, setUserLS } from "../helpers/localStorage";
 import { IoMdArrowBack } from "react-icons/io";
 import { styledLi } from "../helpers/tailwindClasses";
-import UserAuctionsList from "../components/UserAuctionsList";
+import UserAuctionsList from "../components/UserPage/UserAuctionsList";
+import BtnCreateAuction from "../components/UserPage/BtnCreateAuction";
 
 const corrUrl = process.env.REACT_APP_API_URL;
 
 function UserPage() {
   const { user: userAuth0, logout } = useAuth0();
   const [userData, setUserData] = useState([]);
-  const [lots, setLots] = useState([]);
-  const [{ myBetsOpen, myLostOpen }, setOpenPage] = useState({
-    myLostOpen: true,
+  const [{ myBetsOpen, myLotsOpen }, setOpenPage] = useState({
+    myLotsOpen: true,
     myBetsOpen: false,
   });
-  const { data: fetchData, isLoading } = useAxiosFetch(
+  const { data: userDataApi, isLoading } = useAxiosFetch(
     `users/email/${userAuth0?.email}`,
-    setUser,
-  );
-  const { isLoading: lotsIsLoading } = useAxiosFetch(
-    `auctions/createdBy/${userAuth0?.email}`,
-    setLots,
   );
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     async function registerUserToApi() {
       return await axios
         .post(`${corrUrl}users/add/user`, {
-          name: userAuth0?.name,
-          email: userAuth0?.email,
-          photoURL: userAuth0?.picture,
+          name: "asdasdasd",
+          email: "asdasd@gmail.com",
+          photoURL: "asdasdasd.com",
         })
         .then((response) => {
           return response.data;
@@ -43,19 +38,20 @@ function UserPage() {
         .catch((err) => console.log(err));
     }
 
-    console.log();
+    setUserData(userDataApi);
+    setUserLS(userDataApi);
 
-    if (!fetchData?.id && !isLoading && !userData?.id) registerUserToApi();
+    if (userData === "") registerUserToApi();
   }, [
     userAuth0?.name,
     userAuth0?.picture,
     userAuth0?.email,
-    isLoading,
-    fetchData?.id,
-    userData?.id,
+    userData,
+    userDataApi,
   ]);
 
   const handleLogout = () => {
+    removeUserLS();
     logout({
       logoutParams: {
         returnTo: window.location.origin,
@@ -103,9 +99,7 @@ function UserPage() {
         </section>
       </article>
       <div className="mt-6 flex justify-end">
-        <button className="mr-6 mt-8 rounded-full bg-gray-900/[0.5] px-6 py-2 text-2xl text-gray-50 hover:bg-gray-900/[0.65]">
-          Перейти до лотів
-        </button>
+        <BtnCreateAuction />
       </div>
 
       <section>
@@ -113,17 +107,17 @@ function UserPage() {
           <button
             className={`cursor-default border-b-2 border-b-transparent text-3xl font-normal ${myBetsOpen && " text-gray-300 duration-200 ease-in hover:cursor-pointer hover:border-b-2 hover:border-b-gray-600 hover:text-gray-900"}`}
             onClick={() =>
-              setOpenPage((prev) => ({ myLostOpen: true, myBetsOpen: false }))
+              setOpenPage(() => ({ myLotsOpen: true, myBetsOpen: false }))
             }
-            disabled={myLostOpen}
+            disabled={myLotsOpen}
           >
             Мої лоти
           </button>
           <button
-            className={`cursor-default border-b-2 border-b-transparent text-3xl font-normal ${myLostOpen && " text-gray-300 duration-200 ease-in hover:cursor-pointer hover:border-b-2 hover:border-b-gray-600 hover:text-gray-900"}`}
+            className={`cursor-default border-b-2 border-b-transparent text-3xl font-normal ${myLotsOpen && " text-gray-300 duration-200 ease-in hover:cursor-pointer hover:border-b-2 hover:border-b-gray-600 hover:text-gray-900"}`}
             disabled={myBetsOpen}
             onClick={() =>
-              setOpenPage((prev) => ({ myLostOpen: false, myBetsOpen: true }))
+              setOpenPage(() => ({ myLotsOpen: false, myBetsOpen: true }))
             }
           >
             Мої ставки
@@ -131,7 +125,7 @@ function UserPage() {
         </div>
       </section>
       <section className="flex w-full justify-center">
-        <UserAuctionsList type={"lots"} data={lots} isLoading={lotsIsLoading} />
+        <UserAuctionsList type={"lots"} />
       </section>
     </main>
   );
