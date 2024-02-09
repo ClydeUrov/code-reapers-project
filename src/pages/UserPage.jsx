@@ -9,6 +9,7 @@ import UserAuctionsList from "../components/UserPage/UserAuctionsList";
 import BtnCreateAuction from "../components/UserPage/BtnCreateAuction";
 
 const corrUrl = process.env.REACT_APP_API_URL;
+const corrWSUrl = process.env.REACT_APP_WS_URL;
 
 function UserPage() {
   const { user: userAuth0, logout } = useAuth0();
