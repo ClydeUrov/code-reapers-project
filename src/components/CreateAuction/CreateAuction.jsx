@@ -78,10 +78,12 @@ const CreateAuction = ({ closeModal, auction }) => {
 
   return (
     <div>
-      <h2 className="mb-4 mt-10 text-center text-[40px]">{auction ? "Оновлення аукціону" : "Створення аукціону"}</h2>
-      <form className="flex gap-5" onSubmit={handleSubmit}>
+      <h2 className="mb-6  text-center text-[40px]">
+        {auction ? "Оновлення аукціону" : "Створення аукціону"}
+      </h2>
+      <form className="flex h-fit gap-5" onSubmit={handleSubmit}>
         <div className="w-1/2">
-          <div className="mb-4">
+          <div className="mb-3">
             <input
               type="text"
               placeholder="Назва лота"
@@ -93,7 +95,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-3">
             <input
               type="number"
               placeholder="Стартова ціна"
@@ -105,7 +107,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-3">
             <input
               type="datetime-local"
               placeholder="Початок аукціону"
@@ -117,7 +119,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               required
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-3">
             <textarea
               id="description"
               placeholder="Опис"
@@ -140,10 +142,6 @@ const CreateAuction = ({ closeModal, auction }) => {
           handleImageChangeOrDrop={handleImageChangeOrDrop}
         />
       </form>
-      <p className="mb-4 text-right text-gray-600">
-        Перше фото буде на обкладинці лота. <br />
-        Перетягніть, щоб змінити порядок фото
-      </p>
     </div>
   );
 };

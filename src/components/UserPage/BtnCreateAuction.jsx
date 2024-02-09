@@ -21,8 +21,8 @@ function BtnCreateAuction() {
         Створити аукціон
       </button>
       {isModalOpen && (
-        <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="relative max-h-[700px] min-h-[595px] w-[1000px] rounded-lg bg-white px-16 py-3">
+        <div className="fixed left-0 top-12 z-20 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="relative h-[500px] w-[800px] rounded-lg bg-white px-16">
             <button
               onClick={closeModal}
               className="absolute right-3 top-3 rounded-full p-2 text-slate-600 hover:text-black"

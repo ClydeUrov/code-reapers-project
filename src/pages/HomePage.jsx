@@ -32,10 +32,10 @@ function Homepage() {
 
   const fetchData = useCallback(async () => {
     try {
-        const data = await getAllAuctions();
-        setAuctions(data);
+      const data = await getAllAuctions();
+      setAuctions(data);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
   }, []);
 
@@ -77,7 +77,7 @@ function Homepage() {
             >
               Створити аукціон
             </button>
-            <button 
+            <button
               className="h-[70px] w-[280px] rounded-3xl border bg-gray-300 text-2xl hover:bg-gray-400"
               onClick={() => scrollTo("#auctions")}
             >
@@ -127,7 +127,7 @@ function Homepage() {
             </li>
             <li className="flex items-center text-lg">
               <MdOutlineUpdate className="text-3xl" />
-              <button 
+              <button
                 className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
                 onClick={() => fetchData()}
               >
@@ -145,8 +145,8 @@ function Homepage() {
         </div>
       </div>
       {isModalOpen && (
-        <div className="fixed left-0 top-0 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="relative min-h-[595px] max-h-[700px] w-[1000px] rounded-lg bg-white px-16 py-3">
+        <div className="fixed left-0 top-12 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="relative h-[500px] w-[800px] rounded-lg bg-white px-16">
             <button
               onClick={closeModal}
               className="absolute right-3 top-3 rounded-full p-2 text-slate-600 hover:text-black"

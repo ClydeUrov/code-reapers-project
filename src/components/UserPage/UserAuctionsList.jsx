@@ -24,7 +24,7 @@ function UserAuctionsList({ type }) {
             className=" relative flex w-full items-center justify-center "
             key={el.id}
           >
-            <section className="group relative flex h-80 w-80 flex-col items-center gap-2  rounded-lg border-solid border-gray-300  bg-gray-100 px-4 py-6  hover:backdrop-blur-md hover:[&>div]:visible [&>p]:break-normal [&>p]:text-sm [&>p]:font-normal">
+            <section className="group relative flex h-80 w-80 flex-col items-center gap-2  rounded-lg border-solid border-gray-300  bg-gray-100 px-4 py-6  hover:backdrop-blur-md [&>p]:break-normal [&>p]:text-sm [&>p]:font-normal">
               <div className="invisible absolute left-0 top-0 z-10 flex h-full w-full flex-col items-center justify-center gap-6 rounded-lg bg-gray-500/70 backdrop-blur-[2px] group-hover:visible">
                 <button className="w-3/5 rounded-full bg-slate-900/80 py-2 text-slate-50 hover:bg-slate-800/90">
                   Редагувати лот
