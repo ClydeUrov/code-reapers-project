@@ -6,8 +6,6 @@ function AuctionPage() {
   const { auctionId } = useParams();
   const auction = auctions[0];
   const images = auctions.slice(0, 4).map((el) => el.url);
-  console.log(images);
-  console.log(auction);
 
   return (
     <main className="mx-8 gap-x-14">

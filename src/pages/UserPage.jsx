@@ -22,8 +22,6 @@ function UserPage() {
     `users/email/${userAuth0?.email}`,
   );
 
-  console.log(userAuth0);
-
   useEffect(() => {
     async function registerUserToApi() {
       return await axios
