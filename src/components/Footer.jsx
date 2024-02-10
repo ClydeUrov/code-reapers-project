@@ -2,6 +2,14 @@ import Logo from "./Logo";
 import { FaFacebook, FaInstagramSquare, FaTelegram } from "react-icons/fa";
 
 const Footer = () => {
+  function scrollTo(id) {
+    if (document.querySelector(id)) {
+      document
+        .querySelector(id)
+        .scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+
   return (
     <div className="mx-auto mt-10 flex h-[212px] w-full gap-x-60 bg-gray-300">
       <div className="ml-16 flex items-center">
@@ -9,9 +17,9 @@ const Footer = () => {
       </div>
       <div id="contacts" className="mt-8 flex w-[800px] flex-col gap-6">
         <div className="mb-8 flex justify-center gap-10">
-          <p>Головна</p>
-          <p>Про нас</p>
-          <p>Аукціон</p>
+          <p onClick={() => scrollTo("#main")} className="cursor-pointer">Головна</p>
+          <p onClick={() => scrollTo("#aboutUs")} className="cursor-pointer">Про нас</p>
+          <p onClick={() => scrollTo("#auctions")} className="cursor-pointer">Аукціон</p>
         </div>
         <div className="flex justify-center gap-10">
           <p>Звітність</p>

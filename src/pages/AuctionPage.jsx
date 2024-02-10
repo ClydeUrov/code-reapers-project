@@ -34,8 +34,6 @@ function AuctionPage() {
     });
   }, [auctionData]);
 
-  console.log(auctionData, isLoading);
-
   if (isLoading) return <h2>Loading...</h2>;
   if (!auctionData?.id) return <h2>error</h2>;
   return (
@@ -44,6 +42,7 @@ function AuctionPage() {
         <h1>{auctionData.title}</h1>
       </header>
       <section className="flex w-full justify-center gap-x-8">
+
         <section className="ml-6 w-2/5 space-y-3 px-6 ">
           {!!memoImg?.length && <SwiperAuctions images={memoImg} />}
         </section>
