@@ -25,7 +25,7 @@ function AuctionPage() {
     });
   }, [auctionData]);
 
-  console.log(auctionData);
+  console.log(auctionData, memoImg);
 
   if (isLoading) return <h2>Loading...</h2>;
   return (
@@ -35,7 +35,7 @@ function AuctionPage() {
       </header>
       <section className="flex w-full justify-center gap-x-8">
         <section className="ml-6 w-2/5 space-y-3 px-6">
-          <SwiperAuctions images={memoImg} />
+          {memoImg?.length > 0 && <SwiperAuctions images={memoImg} />}
         </section>
 
         <article className="mt-10 space-y-4">
