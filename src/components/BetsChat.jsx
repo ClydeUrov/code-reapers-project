@@ -15,7 +15,6 @@ function BetsChat({ prevMess, auction }) {
     const date = new Date();
     return date >= dateEnd;
   });
-  const [uniqueUserEmailsArr, setUniqueUserEmailsArr] = useState(null);
 
   useEffect(() => {
     const checkTime = () => {
@@ -51,7 +50,6 @@ function BetsChat({ prevMess, auction }) {
         setMessages((prev) => {
           return [recievedMessage, ...prev];
         });
-        // setUniqueUserEmailsArr(messages.map((el) => el.userEmail));
       });
     });
 
@@ -96,8 +94,7 @@ function BetsChat({ prevMess, auction }) {
     }
   };
 
-  console.log(messages);
-  console.log(uniqueUserEmailsArr);
+  const uniqueArr = [...new Set(messages.map((el) => el.userEmail))];
 
   if (!isConnected) <h2>Loading...</h2>;
 
@@ -129,7 +126,7 @@ function BetsChat({ prevMess, auction }) {
   }
 
   return (
-    <div className="mt-20 max-h-[50dvh]">
+    <div className="mb-12 mt-20">
       <h2 className="mb-4 h-4 text-center text-red-500"> {error}</h2>
       <div className="mb-12 flex items-center justify-center gap-12">
         <div className="flex items-center justify-center gap-4">
@@ -155,22 +152,30 @@ function BetsChat({ prevMess, auction }) {
         </div>
       </div>
       <h2 className="text-center text-2xl font-semibold">Історія ставок</h2>
-      <ul className="mt-8 w-full  [&>li:nth-child(even)]:bg-gray-100 [&>li:nth-child(odd)]:bg-gray-300 [&>li]:py-6">
-        <li className="grid grid-cols-3 text-xl font-medium [&>*]:text-center ">
-          <span>Дата</span>
-          <span>Учасник</span>
-          <span>Ставка</span>
-        </li>
-        {messages.map((msg) => {
-          return (
-            <li key={msg.id} className="grid grid-cols-3 [&>*]:text-center">
-              <span>{new Date(msg.betTime).toLocaleString("uk-UA")}</span>
-              <span>{msg.userEmail}</span>
-              <span>{msg.bid}</span>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="flex w-full">
+        <ul className="mb-8 mt-8  max-h-96 w-4/5 overflow-y-auto [&>li:nth-child(even)]:bg-gray-100 [&>li:nth-child(odd)]:bg-gray-300 [&>li]:py-6">
+          <li className="grid grid-cols-3 text-xl font-medium [&>*]:text-center ">
+            <span>Дата</span>
+            <span>Учасник</span>
+            <span>Ставка</span>
+          </li>
+          {messages.map((msg) => {
+            return (
+              <li key={msg.id} className="grid grid-cols-3 [&>*]:text-center">
+                <span>{new Date(msg.betTime).toLocaleString("uk-UA")}</span>
+                <span>{msg.userEmail}</span>
+                <span>{msg.bid}</span>
+              </li>
+            );
+          })}
+        </ul>
+        <ul className="flex w-1/5 flex-col items-center justify-center gap-4">
+          <li>Учасники:</li>
+          {uniqueArr.map((el) => (
+            <li className="text-lg font-semibold">{el}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
