@@ -12,7 +12,7 @@ function ModalUserHeader({ setShowModal, showModal, modalRef, onLogout }) {
   return (
     <section
       ref={modalRef}
-      className={`absolute right-0 top-24  h-52 ${showModal ? " w-80" : "w-0"} rounded-bl-3xl bg-[#D9D9D9]   duration-300 ease-out ${!showModal && "translate-x-full"} flex justify-between transition-all `}
+      className={`absolute right-0 top-24  h-32 ${showModal ? " w-80" : "w-0"} rounded-bl-3xl bg-[#D9D9D9]   duration-300 ease-out ${!showModal && "translate-x-full"} flex justify-between transition-all `}
     >
       {showModal && (
         <>
@@ -21,8 +21,6 @@ function ModalUserHeader({ setShowModal, showModal, modalRef, onLogout }) {
               <li className={styledLi} onClick={() => navigateTo("/profile")}>
                 Особисті дані
               </li>
-              <li className={styledLi}>Мої лоти</li>
-              <li className={styledLi}>Мої ставки</li>
             </ul>
           </nav>
           <span
