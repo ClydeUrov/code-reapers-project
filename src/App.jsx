@@ -17,23 +17,8 @@ function App() {
           <Route path="/auction/:auctionId" element={<AuctionPage />} />
         </Route>
       </Routes>
-      {/* <ToastContainer
-        autoClose={3000}
-        position="top-center"
-        stacked
-        closeButton={() => <CloseButtonIcon />}
-        style={{
-          borderRadius: "2rem",
-        }}
-      /> */}
     </Auth0ProviderWithHistory>
   );
 }
 
 export default App;
-
-// <UserContext.Provider value={{ user, setUser }}>
-//   <Header />
-//   <Layout />
-//   <Footer />
-// </UserContext.Provider>

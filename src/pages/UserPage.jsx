@@ -7,6 +7,9 @@ import { IoMdArrowBack } from "react-icons/io";
 import { styledLi } from "../helpers/tailwindClasses";
 import UserAuctionsList from "../components/UserPage/UserAuctionsList";
 import BtnCreateAuction from "../components/UserPage/BtnCreateAuction";
+import { RxCross1 } from "react-icons/rx";
+import CreateAuction from "../components/CreateAuction/CreateAuction";
+import Loader from "../components/Loader";
 
 const corrUrl = process.env.REACT_APP_API_URL;
 const corrWSUrl = process.env.REACT_APP_WS_URL;
@@ -64,7 +67,8 @@ function UserPage() {
     setUserData(data);
   }
 
-  if (!userData || isLoading) return <h2>Loading...</h2>;
+
+  if (!userData || isLoading) return <Loader />;
 
   return (
     <main>

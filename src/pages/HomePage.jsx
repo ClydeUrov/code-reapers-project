@@ -8,11 +8,14 @@ import { RxCross1 } from "react-icons/rx";
 import CreateAuction from "../components/CreateAuction/CreateAuction";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAllAuctions } from "../helpers/api";
+import Loader from "../components/Loader";
+import { RotatingLines } from "react-loader-spinner";
 
 function Homepage() {
   const [auctions, setAuctions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loginWithRedirect, user } = useAuth0();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
     await loginWithRedirect({
@@ -31,12 +34,14 @@ function Homepage() {
   };
 
   const fetchData = useCallback(async () => {
+    setLoading(true);
     try {
       const data = await getAllAuctions();
       setAuctions(data);
     } catch (error) {
       console.log(error);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -141,7 +146,21 @@ function Homepage() {
               </button>
             </li>
           </ul>
-          <AuctionList auctions={auctions} />
+          {loading ? (
+            <div className="w-4/5 ml-[400px]">
+              <div className="text-center">
+                <RotatingLines
+                  strokeColor="#696969"
+                  strokeWidth="5"
+                  animationDuration="0.75"
+                  width="96"
+                  visible={true}
+                />
+              </div>
+            </div>
+          ) : (
+            <AuctionList auctions={auctions} />
+          )}
         </div>
       </div>
       {isModalOpen && (
