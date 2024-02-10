@@ -34,8 +34,6 @@ function AuctionPage() {
     });
   }, [auctionData]);
 
-  console.log(auctionData, isLoading);
-
   if (isLoading) return <h2>Loading...</h2>;
   if (!auctionData?.id) return <h2>error</h2>;
   return (

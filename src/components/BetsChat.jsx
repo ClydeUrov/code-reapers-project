@@ -15,6 +15,7 @@ function BetsChat({ prevMess, auction }) {
     const date = new Date();
     return date >= dateEnd;
   });
+  const [uniqueUserEmailsArr, setUniqueUserEmailsArr] = useState(null);
 
   useEffect(() => {
     const checkTime = () => {
@@ -47,7 +48,10 @@ function BetsChat({ prevMess, auction }) {
         setIsConnected(true);
         const recievedMessage = JSON.parse(message.body);
 
-        setMessages((prev) => [recievedMessage, ...prev]);
+        setMessages((prev) => {
+          return [recievedMessage, ...prev];
+        });
+        // setUniqueUserEmailsArr(messages.map((el) => el.userEmail));
       });
     });
 
@@ -93,6 +97,7 @@ function BetsChat({ prevMess, auction }) {
   };
 
   console.log(messages);
+  console.log(uniqueUserEmailsArr);
 
   if (!isConnected) <h2>Loading...</h2>;
 
@@ -124,7 +129,7 @@ function BetsChat({ prevMess, auction }) {
   }
 
   return (
-    <div className="mt-20">
+    <div className="mt-20 max-h-[50dvh]">
       <h2 className="mb-4 h-4 text-center text-red-500"> {error}</h2>
       <div className="mb-12 flex items-center justify-center gap-12">
         <div className="flex items-center justify-center gap-4">

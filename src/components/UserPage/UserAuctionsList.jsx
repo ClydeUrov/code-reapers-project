@@ -49,7 +49,7 @@ function UserAuctionsList({ type }) {
                 />
               )}
               <p>Стартова ціна: {el.startPrice} грн</p>
-              <p>Дата проведення аукціону: {el.startTime.replace("T", " ")}</p>
+              <p>Дата проведення аукціону: {el.startTime}</p>
               <p>Кількість учасників</p>
             </section>
           </div>
