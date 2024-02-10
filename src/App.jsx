@@ -4,6 +4,7 @@ import Homepage from "./pages/HomePage";
 import UserPage from "./pages/UserPage";
 import AuctionPage from "./pages/AuctionPage";
 import Auth0ProviderWithHistory from "./auth0Provider";
+import TEST from "./pages/TEST";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Homepage />} />
           <Route path="/profile" element={<UserPage />} />
+          <Route path="/test" element={<TEST />} />
           <Route path="/auction/:auctionId" element={<AuctionPage />} />
         </Route>
       </Routes>

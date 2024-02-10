@@ -44,7 +44,7 @@ function AuctionPage() {
             Стартова ціна: {auctionData.startPrice} грн
           </h3>
           <p className="ml-4">
-            Дата проведення аукціону: {auctionData.startTime.replace("T", " ")}
+            Дата проведення аукціону: {auctionData.startTime}
           </p>
 
           {auctionData.description}
