@@ -19,6 +19,10 @@ const CreateAuction = ({ closeModal, auction }) => {
   const [imgFiles, setImgFiles] = useState([]);
   const { email } = getUserLS();
 
+  const data = new Date();
+  data.setHours(data.getHours() + 2);
+  const currentData = data.toISOString().slice(0, 16);
+
   const handleImageChangeOrDrop = async (e, index) => {
     const file = e.target.files?.[0] ?? e.dataTransfer.files?.[0];
 
@@ -47,6 +51,7 @@ const CreateAuction = ({ closeModal, auction }) => {
     e.preventDefault();
     try {
       let auctionId;
+      formData.startTime = formData.startTime.slice(0, -2) + '00';
       if (auction) {
         formData.id = auction.id;
         auctionId = await updateAuction({ data: formData });
@@ -98,6 +103,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               onChange={handleChange}
               className="w-full rounded-[18px] border border-gray-300 p-3"
               required
+              max={5000}
             />
           </div>
           <div className="mb-3">
@@ -110,6 +116,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               onChange={handleChange}
               className="w-full rounded-[18px] border border-gray-300 p-3"
               step="3600"
+              min={currentData}
               required
             />
           </div>
