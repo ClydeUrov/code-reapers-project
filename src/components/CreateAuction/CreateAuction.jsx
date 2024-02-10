@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { postAuction, postAuctionImages, updateAuction } from "../../helpers/api";
+import {
+  postAuction,
+  postAuctionImages,
+  updateAuction,
+} from "../../helpers/api";
 import { getUserLS } from "../../helpers/localStorage";
 import getImage from "../../helpers/bitToImg";
 import ImageList from "./ImageList";
@@ -93,6 +97,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               type="number"
               placeholder="Стартова ціна"
               id="startPrice"
+              max={5000}
               name="startPrice"
               value={formData.startPrice}
               onChange={handleChange}
