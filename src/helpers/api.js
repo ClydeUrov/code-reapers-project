@@ -25,8 +25,9 @@ export const postAuction = async ({ userEmail, data }) => {
 };
 
 export const updateAuction = async ({ data }) => {
+  console.log("data", data);
   return await axios
-    .post(`auctions/update`, data)
+    .put(`auctions/update`, data)
     .then((response) => response.data)
     .catch((err) => console.log(err));
 };

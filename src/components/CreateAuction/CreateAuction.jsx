@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { AiOutlinePicture, AiOutlineDelete } from "react-icons/ai";
-import { postAuction, postAuctionImages } from "../../helpers/api";
+import { postAuction, postAuctionImages, updateAuction } from "../../helpers/api";
 import { getUserLS } from "../../helpers/localStorage";
-import { toast } from "react-toastify";
 import getImage from "../../helpers/bitToImg";
 import ImageList from "./ImageList";
 
@@ -51,29 +49,25 @@ const CreateAuction = ({ closeModal, auction }) => {
       let auctionId;
       if (auction) {
         formData.id = auction.id;
+        console.log(formData);
+        auctionId = await updateAuction({ data: formData });
+      } else {
+        auctionId = await postAuction({ userEmail: email, data: formData });
       }
 
-      auctionId = await toast.promise(
-        postAuction({ userEmail: email, data: formData }),
-        {
-          pending: "Request in progress",
-          success: "Auction created successfully!",
-          error: "Auction was not created",
-        },
-      );
-
-      if (images.length > 0) {
+      if (imgFiles && imgFiles.length > 0 && images.length > 0) {
+        console.log(images, imgFiles);
         const formImages = new FormData();
         imgFiles.forEach((item) => {
           formImages.append("image", item);
         });
         await postAuctionImages({ auctionId: auctionId, data: formImages });
       }
+      closeModal();
     } catch (e) {
+      closeModal();
       console.log(e);
     }
-
-    closeModal();
   };
 
   return (
@@ -92,6 +86,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               value={formData.title}
               onChange={handleChange}
               className="w-full rounded-[18px] border border-gray-300 p-3"
+              maxLength={64}
               required
             />
           </div>
@@ -116,6 +111,7 @@ const CreateAuction = ({ closeModal, auction }) => {
               value={formData.startTime}
               onChange={handleChange}
               className="w-full rounded-[18px] border border-gray-300 p-3"
+              step="3600"
               required
             />
           </div>
@@ -128,6 +124,8 @@ const CreateAuction = ({ closeModal, auction }) => {
               value={formData.description}
               onChange={handleChange}
               className="max-h-[205px] w-full rounded-[18px] border border-gray-300 p-3"
+              maxLength={256}
+              required
             />
           </div>
           <button
