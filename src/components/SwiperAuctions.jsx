@@ -23,6 +23,7 @@ function SwiperAuctions({ mainImage, images }) {
   }
 
   if (!images) return <h2>Error</h2>;
+  if (!images.length) return <h2 className="">No Image!</h2>;
 
   return (
     <>
@@ -34,60 +35,74 @@ function SwiperAuctions({ mainImage, images }) {
             loop={true}
             modules={[FreeMode, Thumbs]}
           >
-            {images?.map((item, i) => {
-              return (
-                <SwiperSlide key={item.id} data-number={i}>
-                  <img
-                    src={item.image}
-                    alt={i + 1}
-                    className="h-full w-full object-fill"
-                  />
-                </SwiperSlide>
-              );
-            })}
+            {images.length &&
+              images?.map((item, i) => {
+                return (
+                  <SwiperSlide key={item.id} data-number={i}>
+                    <img
+                      src={item.image}
+                      alt={i + 1}
+                      className="h-full w-full object-fill"
+                    />
+                  </SwiperSlide>
+                );
+              })}
           </Swiper>
-          <div className=" absolute top-[25dvh] z-10 flex w-full justify-between px-4 ">
-            <button type="button" onClick={handleNextSlide}>
-              <FaArrowLeft
-                size={32}
-                className="text-gray-100 opacity-50 hover:rounded-full hover:bg-gray-200/[0.5] hover:bg-gray-50 hover:opacity-100"
-              />
-            </button>
-            <button
-              type="button"
-              className=" p-2 hover:rounded-full hover:bg-gray-50/50"
-              onClick={handlePrevSlide}
-            >
-              <FaArrowRight
-                size={32}
-                className="text-gray-100 opacity-70 hover:text-gray-100/90  "
-              />
-            </button>
-          </div>
+          {images.length > 1 && (
+            <>
+              <div className=" absolute top-[25dvh] z-10 flex w-full justify-between px-4 ">
+                <button
+                  type="button"
+                  onClick={handleNextSlide}
+                  className=" p-2 hover:rounded-full hover:bg-gray-50/50"
+                >
+                  <FaArrowLeft
+                    size={32}
+                    className="text-gray-100 opacity-70 hover:text-gray-100/90  "
+                  />
+                </button>
+                <button
+                  type="button"
+                  className=" p-2 hover:rounded-full hover:bg-gray-50/50"
+                  onClick={handlePrevSlide}
+                >
+                  <FaArrowRight
+                    size={32}
+                    className="text-gray-100 opacity-70 hover:text-gray-100/90  "
+                  />
+                </button>
+              </div>{" "}
+            </>
+          )}
         </div>
-        <Swiper
-          ref={swiper2Ref}
-          className="w-full"
-          // direction="horizontal"
-          loop={true}
-          spaceBetween={16}
-          slidesPerView={3}
-          // freeMode={true}
-          // watchSlidesProgress={true}
-          modules={[FreeMode, Thumbs]}
-        >
-          {[...images.slice(1), images[0]]?.map((item, i) => {
-            return (
-              <SwiperSlide key={item.id}>
-                <img
-                  src={item.image}
-                  alt={i + 1}
-                  className="h-[14dvh] w-full  object-fill"
-                />
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
+        {images.length > 1 && (
+          <>
+            <Swiper
+              ref={swiper2Ref}
+              className="w-full"
+              // direction="horizontal"
+              loop={true}
+              spaceBetween={16}
+              slidesPerView={3}
+              // freeMode={true}
+              // watchSlidesProgress={true}
+              modules={[FreeMode, Thumbs]}
+            >
+              {images.length &&
+                [...images.slice(1), images[0]]?.map((item, i) => {
+                  return (
+                    <SwiperSlide key={item.id}>
+                      <img
+                        src={item.image}
+                        alt={i + 1}
+                        className="h-[14dvh] w-full  object-fill"
+                      />
+                    </SwiperSlide>
+                  );
+                })}
+            </Swiper>
+          </>
+        )}
       </div>
     </>
   );
