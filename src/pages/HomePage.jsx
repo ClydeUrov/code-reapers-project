@@ -8,7 +8,6 @@ import { RxCross1 } from "react-icons/rx";
 import CreateAuction from "../components/CreateAuction/CreateAuction";
 import { useAuth0 } from "@auth0/auth0-react";
 import { getAllAuctions } from "../helpers/api";
-import Loader from "../components/Loader";
 import { RotatingLines } from "react-loader-spinner";
 
 function Homepage() {

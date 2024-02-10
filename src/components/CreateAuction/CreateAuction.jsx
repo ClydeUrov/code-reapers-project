@@ -49,14 +49,12 @@ const CreateAuction = ({ closeModal, auction }) => {
       let auctionId;
       if (auction) {
         formData.id = auction.id;
-        console.log(formData);
         auctionId = await updateAuction({ data: formData });
       } else {
         auctionId = await postAuction({ userEmail: email, data: formData });
       }
 
       if (imgFiles && imgFiles.length > 0 && images.length > 0) {
-        console.log(images, imgFiles);
         const formImages = new FormData();
         imgFiles.forEach((item) => {
           formImages.append("image", item);

@@ -92,7 +92,6 @@ function BetsChat({ prevMess, auction }) {
     }
   };
 
-  console.log(messages);
 
   if (!isConnected) <h2>Loading...</h2>;
 

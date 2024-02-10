@@ -1,5 +1,5 @@
 import React from "react";
-import { AiOutlineDelete, AiOutlinePicture } from "react-icons/ai";
+import { AiOutlinePicture } from "react-icons/ai";
 
 const ImageList = ({ images, handleImageChangeOrDrop }) => {
   return (
