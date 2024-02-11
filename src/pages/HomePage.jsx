@@ -1,7 +1,6 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
-import { MdOutlineUpdate, MdFilterList, MdSearch, MdSort } from "react-icons/md";
-// import auctions from "../helpers/auctions.json";
+import { MdOutlineUpdate, MdFilterList, MdSort } from "react-icons/md";
 import AuctionList from "../components/AuctionList";
 import { useCallback, useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
@@ -10,13 +9,21 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { getAllAuctions } from "../helpers/api";
 import { RotatingLines } from "react-loader-spinner";
 
+const initialActive = {
+  nowOpen: false,
+  ended: false,
+  beginSoon: false,
+  sortByCheap: false,
+  sortByRich: false,
+};
+
 function Homepage() {
   const [auctions, setAuctions] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loginWithRedirect, user } = useAuth0();
   const [loading, setLoading] = useState(false);
   const [sortedAuctions, setSortedAuctions] = useState([]);
-  const [filteredAuctions, setFilteredAuctions] = useState([]);
+  const [activeFilters, setActiveFilters] = useState(initialActive);
 
   const handleLogin = async () => {
     await loginWithRedirect({
@@ -39,6 +46,7 @@ function Homepage() {
     try {
       const data = await getAllAuctions();
       setAuctions(data);
+      setSortedAuctions(data);
     } catch (error) {
       console.log(error);
     }
@@ -57,22 +65,48 @@ function Homepage() {
     }
   }
 
-  const sortAuctionsByPrice = () => {
-    if (sortedAuctions) {
-      setSortedAuctions([]);
-    } else {
-      const sorted = [...auctions].sort((a, b) => a.startPrice - b.startPrice);
-      setSortedAuctions(sorted);
-    }
+  function sortByTime() {
+    setSortedAuctions(
+      auctions
+        .filter((e) => e.state === "PREPARING")
+        .sort((a, b) => new Date(a.startTime) - new Date(b.startTime)),
+    );
+    setActiveFilters(() => ({
+      ...initialActive,
+      beginSoon: true,
+    }));
+  }
+
+  function sortEnded() {
+    setSortedAuctions(auctions.filter((el) => el.state === "CLOSED"));
+    setActiveFilters(() => ({
+      ...initialActive,
+      ended: true,
+    }));
+  }
+
+  const sortAuctionsByPriceMax = () => {
+    setSortedAuctions(
+      auctions.slice().sort((a, b) => b.startPrice - a.startPrice),
+    );
+    setActiveFilters(() => ({
+      ...initialActive,
+      sortByRich: true,
+    }));
+  };
+  const sortAuctionsByPriceMin = () => {
+    setSortedAuctions(
+      auctions.slice().sort((a, b) => a.startPrice - b.startPrice),
+    );
+    setActiveFilters(() => ({
+      ...initialActive,
+      sortByCheap: true,
+    }));
   };
 
   const filterAuctionsByStatus = () => {
-    if (filteredAuctions) {
-      setFilteredAuctions([]);
-    } else {
-      const filtered = auctions.filter((auction) => auction.status === "OPEN");
-      setFilteredAuctions(filtered);
-    }
+    setSortedAuctions(auctions.filter((e) => e.state === "OPEN"));
+    setActiveFilters(() => ({ ...initialActive, nowOpen: true }));
   };
 
   return (
@@ -142,45 +176,8 @@ function Homepage() {
           Аукціони
         </h2>
         <div className="mt-16 flex justify-around">
-          <ul className="flex w-1/5 flex-col gap-5">
-            <li className="flex items-center text-lg">
-              <MdSearch className="text-3xl" />
-              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
-                ПОШУК
-              </button>
-            </li>
-            <li className="flex items-center text-lg">
-              <MdOutlineUpdate className="text-3xl" />
-              <button
-                className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
-                onClick={() => { setSortedAuctions([]); setFilteredAuctions([]); fetchData(); }}
-              >
-                ОНОВИТИ
-              </button>
-            </li>
-            <li className="flex items-center text-lg">
-              <MdFilterList className="text-3xl" />
-              <button
-                className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
-                onClick={filterAuctionsByStatus}
-                title="Фільтрувати аукціони за статусом OPEN"
-              >
-                ФІЛЬТР
-              </button>
-            </li>
-            <li className="flex items-center text-lg">
-              <MdSort className="text-3xl" />
-              <button
-                className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
-                onClick={sortAuctionsByPrice}
-                title="Сортувати аукціони за ціною"
-              >
-                СОРТУВАТИ
-              </button>
-            </li>
-          </ul>
           {loading ? (
-            <div className="ml-[400px] w-4/5">
+            <div className="mt-16 flex w-full items-center justify-center">
               <div className="text-center">
                 <RotatingLines
                   strokeColor="#696969"
@@ -192,15 +189,85 @@ function Homepage() {
               </div>
             </div>
           ) : (
-            <AuctionList
-              auctions={
-                filteredAuctions.length
-                  ? filteredAuctions
-                  : sortedAuctions.length
-                    ? sortedAuctions
-                    : auctions
-              }
-            />
+            <>
+              <ul className="flex w-1/5 flex-col gap-5">
+                <li className="flex items-center text-lg">
+                  <MdOutlineUpdate className="text-3xl" />
+                  <button
+                    className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400 hover:border-gray-600 hover:bg-gray-100 hover:text-gray-600"
+                    onClick={() => {
+                      setSortedAuctions([]);
+                      setActiveFilters(initialActive);
+                      fetchData();
+                    }}
+                  >
+                    ОНОВИТИ
+                  </button>
+                </li>
+                <li className="flex items-center text-lg">
+                  <MdOutlineUpdate className="text-3xl" />
+                  <button
+                    className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400 hover:border-gray-600 hover:bg-gray-100 hover:text-gray-600"
+                    onClick={() => {
+                      setSortedAuctions(auctions);
+                      setActiveFilters(initialActive);
+                    }}
+                  >
+                    СКАСУВАТИ
+                  </button>
+                </li>
+
+                <li className="flex items-center text-lg">
+                  <MdFilterList className="text-3xl" />
+                  <button
+                    className={`ml-2 w-40 rounded-full border px-2  py-1 hover:bg-gray-100 ${activeFilters.nowOpen ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
+                    onClick={filterAuctionsByStatus}
+                  >
+                    ВІДКРИТІ
+                  </button>
+                </li>
+                <li className="flex items-center text-lg">
+                  <MdFilterList className="text-3xl" />
+                  <button
+                    className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.ended ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
+                    onClick={sortEnded}
+                  >
+                    ЗАВЕРШЕНІ
+                  </button>
+                </li>
+                <li className="flex items-center text-lg">
+                  <MdFilterList className="text-3xl" />
+                  <button
+                    className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.beginSoon ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
+                    onClick={sortByTime}
+                  >
+                    НЕЗАБАРОМ
+                  </button>
+                </li>
+                <li className="flex items-center text-lg">
+                  <MdSort className="text-3xl" />
+                  <button
+                    className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.sortByCheap ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
+                    onClick={sortAuctionsByPriceMin}
+                    title="Сортувати аукціони за зростанням ціни"
+                  >
+                    ЦІНА min/max
+                  </button>
+                </li>
+                <li className="flex items-center text-lg">
+                  <MdSort className="text-3xl" />
+                  <button
+                    className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.sortByRich ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
+                    onClick={sortAuctionsByPriceMax}
+                    title="Сортувати аукціони за спаданням ціни"
+                  >
+                    ЦІНА max/min
+                  </button>
+                </li>
+              </ul>
+
+              <AuctionList auctions={sortedAuctions} />
+            </>
           )}
         </div>
       </div>
