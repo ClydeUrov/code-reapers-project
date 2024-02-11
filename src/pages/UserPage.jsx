@@ -114,15 +114,6 @@ function UserPage() {
           >
             Мої лоти
           </button>
-          <button
-            className={`cursor-default border-b-2 border-b-transparent text-3xl font-normal ${myLotsOpen && " text-gray-300 duration-200 ease-in hover:cursor-pointer hover:border-b-2 hover:border-b-gray-600 hover:text-gray-900"}`}
-            disabled={myBetsOpen}
-            onClick={() =>
-              setOpenPage(() => ({ myLotsOpen: false, myBetsOpen: true }))
-            }
-          >
-            Мої ставки
-          </button>
         </div>
       </section>
       <section className="flex w-full justify-center">
