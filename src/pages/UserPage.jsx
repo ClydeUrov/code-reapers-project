@@ -64,7 +64,6 @@ function UserPage() {
     setUserData(data);
   }
 
-
   if (!userData || isLoading) return <Loader />;
 
   return (
@@ -127,7 +126,7 @@ function UserPage() {
         </div>
       </section>
       <section className="flex w-full justify-center">
-        <UserAuctionsList type={"lots"} />
+        {isLoading ? <Loader /> : <UserAuctionsList type={"lots"} />}
       </section>
     </main>
   );

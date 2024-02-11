@@ -3,7 +3,8 @@ import { Stomp } from "@stomp/stompjs";
 import { getUserLS } from "../helpers/localStorage";
 import Loader from "./Loader";
 
-const wsUrl = process.env.REACT_APP_WS_URL;
+const wsUrl =
+  "ws://ec2-16-170-239-71.eu-north-1.compute.amazonaws.com/auction/api/websocket";
 
 function BetsChat({ prevMess, auction }) {
   const user = getUserLS();

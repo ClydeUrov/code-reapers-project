@@ -1,7 +1,6 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
 import { MdOutlineUpdate, MdFilterList, MdSort } from "react-icons/md";
-// import auctions from "../helpers/auctions.json";
 import AuctionList from "../components/AuctionList";
 import { useCallback, useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
