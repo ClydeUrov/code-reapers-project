@@ -1,11 +1,6 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
-import {
-  MdOutlineUpdate,
-  MdFilterList,
-  MdSearch,
-  MdSort,
-} from "react-icons/md";
+import { MdOutlineUpdate, MdFilterList, MdSort } from "react-icons/md";
 // import auctions from "../helpers/auctions.json";
 import AuctionList from "../components/AuctionList";
 import { useCallback, useEffect, useState } from "react";
@@ -202,21 +197,34 @@ function Homepage() {
                   <button
                     className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400 hover:border-gray-600 hover:bg-gray-100 hover:text-gray-600"
                     onClick={() => {
+                      setSortedAuctions([]);
+                      setActiveFilters(initialActive);
+                      fetchData();
+                    }}
+                  >
+                    ОНОВИТИ
+                  </button>
+                </li>
+                <li className="flex items-center text-lg">
+                  <MdOutlineUpdate className="text-3xl" />
+                  <button
+                    className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400 hover:border-gray-600 hover:bg-gray-100 hover:text-gray-600"
+                    onClick={() => {
                       setSortedAuctions(auctions);
                       setActiveFilters(initialActive);
                     }}
                   >
-                    Скасувати фільтри
+                    СКАСУВАТИ
                   </button>
                 </li>
+
                 <li className="flex items-center text-lg">
                   <MdFilterList className="text-3xl" />
                   <button
                     className={`ml-2 w-40 rounded-full border px-2  py-1 hover:bg-gray-100 ${activeFilters.nowOpen ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
                     onClick={filterAuctionsByStatus}
-                    title="Фільтрувати аукціони за статусом OPEN"
                   >
-                    Зараз відкриті
+                    ВІДКРИТІ
                   </button>
                 </li>
                 <li className="flex items-center text-lg">
@@ -224,9 +232,8 @@ function Homepage() {
                   <button
                     className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.ended ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
                     onClick={sortEnded}
-                    title="Фільтрувати аукціони за статусом OPEN"
                   >
-                    Завершені
+                    ЗАВЕРШЕНІ
                   </button>
                 </li>
                 <li className="flex items-center text-lg">
@@ -234,9 +241,8 @@ function Homepage() {
                   <button
                     className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.beginSoon ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
                     onClick={sortByTime}
-                    title="Фільтрувати аукціони за статусом OPEN"
                   >
-                    Скоро розпочнуться
+                    НЕЗАБАРОМ
                   </button>
                 </li>
                 <li className="flex items-center text-lg">
@@ -244,9 +250,9 @@ function Homepage() {
                   <button
                     className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.sortByCheap ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
                     onClick={sortAuctionsByPriceMin}
-                    title="Сортувати аукціони за ціною"
+                    title="Сортувати аукціони за зростанням ціни"
                   >
-                    Почати з дешевих
+                    ЦІНА min/max
                   </button>
                 </li>
                 <li className="flex items-center text-lg">
@@ -254,9 +260,9 @@ function Homepage() {
                   <button
                     className={`ml-2 w-40 rounded-full border  px-2  py-1 hover:bg-gray-100 ${activeFilters.sortByRich ? "border-2 border-gray-600 bg-gray-100 text-gray-600" : "border-gray-400 text-gray-400"}`}
                     onClick={sortAuctionsByPriceMax}
-                    title="Сортувати аукціони за ціною"
+                    title="Сортувати аукціони за спаданням ціни"
                   >
-                    Почати з дорогих
+                    ЦІНА max/min
                   </button>
                 </li>
               </ul>
