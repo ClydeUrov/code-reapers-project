@@ -1,5 +1,4 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import useAxiosFetch from "../helpers/useAxiosFetch";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { removeUserLS, setUserLS } from "../helpers/localStorage";
@@ -18,12 +17,11 @@ function UserPage() {
     myLotsOpen: true,
     myBetsOpen: false,
   });
-  const { data: userDataApi, isLoading } = useAxiosFetch(
-    `users/email/${userAuth0?.email}`,
-  );
+  const [isLoading, setIsloading] = useState(false);
 
   useEffect(() => {
     async function registerUserToApi() {
+      setIsloading(true);
       return await axios
         .post(`${corrUrl}users/add/user`, {
           name: userAuth0?.name,
@@ -34,22 +32,34 @@ function UserPage() {
           return response.data;
         })
         .then((data) => {
-          setUser(data);
+          setUserData(data);
+          setUserLS(data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+        .finally(() => setIsloading(false));
     }
 
-    setUserData(userDataApi);
-    setUserLS(userDataApi);
+    async function getUserFromApi() {
+      setIsloading(true);
+      await axios
+        .get(`users/email/${userAuth0?.email}`)
+        .then((response) => {
+          return response.data;
+        })
+        .then((data) => {
+          console.log(data);
+          setUserData(data);
+          if (data === "") {
+            registerUserToApi();
+          }
+          setUserLS(data);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => setIsloading(false));
+    }
 
-    if (userData === "") registerUserToApi();
-  }, [
-    userAuth0?.name,
-    userAuth0?.picture,
-    userAuth0?.email,
-    userData,
-    userDataApi,
-  ]);
+    if (useAuth0) getUserFromApi();
+  }, [userAuth0?.name, userAuth0?.picture, userAuth0?.email]);
 
   const handleLogout = () => {
     removeUserLS();
@@ -59,13 +69,9 @@ function UserPage() {
       },
     });
   };
-  function setUser(data) {
-    setUserLS(data);
-    setUserData(data);
-  }
 
 
-  if (!userData || isLoading) return <Loader />;
+  if (!userData) return <Loader />;
 
   return (
     <main>
@@ -115,19 +121,10 @@ function UserPage() {
           >
             Мої лоти
           </button>
-          <button
-            className={`cursor-default border-b-2 border-b-transparent text-3xl font-normal ${myLotsOpen && " text-gray-300 duration-200 ease-in hover:cursor-pointer hover:border-b-2 hover:border-b-gray-600 hover:text-gray-900"}`}
-            disabled={myBetsOpen}
-            onClick={() =>
-              setOpenPage(() => ({ myLotsOpen: false, myBetsOpen: true }))
-            }
-          >
-            Мої ставки
-          </button>
         </div>
       </section>
       <section className="flex w-full justify-center">
-        <UserAuctionsList type={"lots"} />
+        {isLoading ? <Loader /> : <UserAuctionsList type={"lots"} />}
       </section>
     </main>
   );

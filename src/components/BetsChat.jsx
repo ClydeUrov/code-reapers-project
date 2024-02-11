@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import { getUserLS } from "../helpers/localStorage";
-import Loader from "./Loader";
 
 const wsUrl = process.env.REACT_APP_WS_URL
 
@@ -10,7 +9,6 @@ function BetsChat({ prevMess, auction }) {
   const [messages, setMessages] = useState(prevMess);
   const [message, setMessage] = useState("");
   const [stompClient, setStompClient] = useState(null);
-  const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState(null);
   const [isFinish, setIsFinish] = useState(() => {
     let dateEnd = new Date(auction.startTime);
@@ -45,7 +43,6 @@ function BetsChat({ prevMess, auction }) {
 
     client.connect({}, (frame) => {
       client.subscribe(`/bids/auction/${auction.id}`, (message) => {
-        setIsConnected(true);
         const recievedMessage = JSON.parse(message.body);
 
         setMessages((prev) => [recievedMessage, ...prev]);
@@ -96,8 +93,6 @@ function BetsChat({ prevMess, auction }) {
   const uniqueArr = [...new Set(messages.map((el) => el.userEmail))];
 
   if (!user) setError("You must be logged in");
-
-  if (!isConnected) return <Loader />;
 
   if (!messages.length && auction.state === "CLOSED") {
     return (
