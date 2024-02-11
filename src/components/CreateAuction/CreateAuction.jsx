@@ -55,7 +55,7 @@ const CreateAuction = ({ closeModal, auction }) => {
     e.preventDefault();
     try {
       let auctionId;
-      formData.startTime = formData.startTime.slice(0, -2) + '00';
+      formData.startTime = formData.startTime.slice(0, -2) + "00";
       if (auction) {
         formData.id = auction.id;
         auctionId = await updateAuction({ data: formData });
@@ -108,7 +108,6 @@ const CreateAuction = ({ closeModal, auction }) => {
               onChange={handleChange}
               className="w-full rounded-[18px] border border-gray-300 p-3"
               required
-              max={5000}
             />
           </div>
           <div className="mb-3">

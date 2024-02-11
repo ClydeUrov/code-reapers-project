@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import { getUserLS } from "../helpers/localStorage";
+import Loader from "./Loader";
 
-const wsUrl = process.env.REACT_APP_WS_URL
+const wsUrl = process.env.REACT_APP_WS_URL;
 
 function BetsChat({ prevMess, auction }) {
   const user = getUserLS();
@@ -73,7 +74,9 @@ function BetsChat({ prevMess, auction }) {
       };
 
       setMessage("");
-      if (chatMessage.bid >= 10000) {
+      if (!user) {
+        setError("you must be logged in");
+      } else if (chatMessage.bid >= 10000) {
         setError("Sorry, max bet 9999.99");
         return;
       } else if (+chatMessage.bid < auction.startPrice) {
@@ -96,7 +99,9 @@ function BetsChat({ prevMess, auction }) {
 
   const uniqueArr = [...new Set(messages.map((el) => el.userEmail))];
 
-  if (!isConnected) <h2>Loading...</h2>;
+  if (!user) setError("you must be logged in");
+
+  if (!isConnected) return <Loader />;
 
   if (!messages.length && auction.state === "CLOSED") {
     return (
