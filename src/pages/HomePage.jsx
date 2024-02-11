@@ -1,6 +1,6 @@
 import main from "../icons/main.png";
 import image1 from "../icons/image1.png";
-import { MdOutlineUpdate, MdFilterList, MdSearch } from "react-icons/md";
+import { MdOutlineUpdate, MdFilterList, MdSearch, MdSort } from "react-icons/md";
 // import auctions from "../helpers/auctions.json";
 import AuctionList from "../components/AuctionList";
 import { useCallback, useEffect, useState } from "react";
@@ -15,6 +15,8 @@ function Homepage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { loginWithRedirect, user } = useAuth0();
   const [loading, setLoading] = useState(false);
+  const [sortedAuctions, setSortedAuctions] = useState([]);
+  const [filteredAuctions, setFilteredAuctions] = useState([]);
 
   const handleLogin = async () => {
     await loginWithRedirect({
@@ -54,6 +56,24 @@ function Homepage() {
         .scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }
+
+  const sortAuctionsByPrice = () => {
+    if (sortedAuctions) {
+      setSortedAuctions([]);
+    } else {
+      const sorted = [...auctions].sort((a, b) => a.startPrice - b.startPrice);
+      setSortedAuctions(sorted);
+    }
+  };
+
+  const filterAuctionsByStatus = () => {
+    if (filteredAuctions) {
+      setFilteredAuctions([]);
+    } else {
+      const filtered = auctions.filter((auction) => auction.status === "OPEN");
+      setFilteredAuctions(filtered);
+    }
+  };
 
   return (
     <main className="mx-auto">
@@ -133,20 +153,34 @@ function Homepage() {
               <MdOutlineUpdate className="text-3xl" />
               <button
                 className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
-                onClick={() => fetchData()}
+                onClick={() => { setSortedAuctions([]); setFilteredAuctions([]); fetchData(); }}
               >
                 ОНОВИТИ
               </button>
             </li>
             <li className="flex items-center text-lg">
               <MdFilterList className="text-3xl" />
-              <button className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400">
+              <button
+                className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
+                onClick={filterAuctionsByStatus}
+                title="Фільтрувати аукціони за статусом OPEN"
+              >
                 ФІЛЬТР
+              </button>
+            </li>
+            <li className="flex items-center text-lg">
+              <MdSort className="text-3xl" />
+              <button
+                className="ml-2 w-40 rounded-full border border-gray-400 px-2 py-1 text-gray-400"
+                onClick={sortAuctionsByPrice}
+                title="Сортувати аукціони за ціною"
+              >
+                СОРТУВАТИ
               </button>
             </li>
           </ul>
           {loading ? (
-            <div className="w-4/5 ml-[400px]">
+            <div className="ml-[400px] w-4/5">
               <div className="text-center">
                 <RotatingLines
                   strokeColor="#696969"
@@ -158,7 +192,15 @@ function Homepage() {
               </div>
             </div>
           ) : (
-            <AuctionList auctions={auctions} />
+            <AuctionList
+              auctions={
+                filteredAuctions.length
+                  ? filteredAuctions
+                  : sortedAuctions.length
+                    ? sortedAuctions
+                    : auctions
+              }
+            />
           )}
         </div>
       </div>
