@@ -26,14 +26,21 @@ const AuctionList = ({ auctions }) => {
                 />
               )}
               <p className="mt-2">Стартова ціна: {item.startPrice} грн</p>
-              <p>Дата проведення аукціону: {item.startTime.replace("T", " ")}</p>
+              <p>
+                Дата проведення аукціону:{" "}
+                {new Date(item.startTime).toLocaleString("ua-UK")}
+              </p>
               <p>
                 Статус:{" "}
                 <span
-                  className={`border-double rounded-e ${
-                    item.state === "PREPARING" ? "bg-orange-300" :
-                    item.state === "OPEN" ? "bg-lime-300" :
-                    item.state === "CLOSED" ? "bg-red-300" : ""
+                  className={`rounded-e border-double ${
+                    item.state === "PREPARING"
+                      ? "bg-orange-300"
+                      : item.state === "OPEN"
+                        ? "bg-lime-300"
+                        : item.state === "CLOSED"
+                          ? "bg-red-300"
+                          : ""
                   }`}
                 >
                   {item.state}

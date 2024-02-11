@@ -5,6 +5,7 @@ import getImage from "../helpers/bitToImg";
 import { useEffect, useMemo, useRef, useState } from "react";
 import BetsChat from "../components/BetsChat";
 import Loader from "../components/Loader";
+import { getUserLS } from "../helpers/localStorage";
 
 function AuctionPage() {
   const { auctionId } = useParams();
@@ -74,8 +75,14 @@ function AuctionPage() {
       </section>
 
       <section className="mt-8">
-        {auctionData?.id && auctionData.state !== "PREPARING" && (
+        {auctionData?.id && auctionData.state !== "PREPARING" && getUserLS() ? (
           <BetsChat prevMess={chatData} auction={auctionData} />
+        ) : !getUserLS() ? (
+          <h2 className="mt-12 text-center text-xl font-semibold text-red-500">
+            You must register to participate in the auction!
+          </h2>
+        ) : (
+          ""
         )}
       </section>
     </main>
