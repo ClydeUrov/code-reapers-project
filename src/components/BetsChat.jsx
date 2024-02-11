@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import { getUserLS } from "../helpers/localStorage";
 
+const wsUrl = process.env.REACT_APP_WS_URL
+
 function BetsChat({ prevMess, auction }) {
   const user = getUserLS();
   const [messages, setMessages] = useState(prevMess);
@@ -37,9 +39,7 @@ function BetsChat({ prevMess, auction }) {
   }, [auction.startTime]);
 
   useEffect(() => {
-    const socket = new WebSocket(
-      "ws://ec2-16-170-239-71.eu-north-1.compute.amazonaws.com/auction/api/websocket",
-    );
+    const socket = new WebSocket(wsUrl);
     const client = Stomp.over(socket);
 
     client.connect({}, (frame) => {
