@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Stomp } from "@stomp/stompjs";
 import { getUserLS } from "../helpers/localStorage";
+import Loader from "./Loader";
 
 const wsUrl = process.env.REACT_APP_WS_URL
 
@@ -92,8 +93,11 @@ function BetsChat({ prevMess, auction }) {
     }
   };
 
+  const uniqueArr = [...new Set(messages.map((el) => el.userEmail))];
 
-  if (!isConnected) <h2>Loading...</h2>;
+  if (!user) setError("You must be logged in");
+
+  if (!isConnected) return <Loader />;
 
   if (!messages.length && auction.state === "CLOSED") {
     return (
@@ -149,22 +153,30 @@ function BetsChat({ prevMess, auction }) {
         </div>
       </div>
       <h2 className="text-center text-2xl font-semibold">Історія ставок</h2>
-      <ul className="mt-8 w-full  [&>li:nth-child(even)]:bg-gray-100 [&>li:nth-child(odd)]:bg-gray-300 [&>li]:py-6">
-        <li className="grid grid-cols-3 text-xl font-medium [&>*]:text-center ">
-          <span>Дата</span>
-          <span>Учасник</span>
-          <span>Ставка</span>
-        </li>
-        {messages.map((msg) => {
-          return (
-            <li key={msg.id} className="grid grid-cols-3 [&>*]:text-center">
-              <span>{new Date(msg.betTime).toLocaleString("uk-UA")}</span>
-              <span>{msg.userEmail}</span>
-              <span>{msg.bid}</span>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="flex w-full">
+        <ul className="mb-8 mt-8  max-h-96 w-4/5 overflow-y-auto [&>li:nth-child(even)]:bg-gray-100 [&>li:nth-child(odd)]:bg-gray-300 [&>li]:py-6">
+          <li className="grid grid-cols-3 text-xl font-medium [&>*]:text-center ">
+            <span>Дата</span>
+            <span>Учасник</span>
+            <span>Ставка</span>
+          </li>
+          {messages.map((msg) => {
+            return (
+              <li key={msg.id} className="grid grid-cols-3 [&>*]:text-center">
+                <span>{new Date(msg.betTime).toLocaleString("uk-UA")}</span>
+                <span>{msg.userEmail}</span>
+                <span>{msg.bid}</span>
+              </li>
+            );
+          })}
+        </ul>
+        <ul className="flex w-1/5 flex-col items-center justify-center gap-4">
+          <li>Учасники:</li>
+          {uniqueArr.map((el) => (
+            <li className="text-lg font-semibold">{el}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

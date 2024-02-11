@@ -24,7 +24,6 @@ export const postAuction = async ({ userEmail, data }) => {
 };
 
 export const updateAuction = async ({ data }) => {
-  console.log("data", data);
   return await axios
     .put(`auctions/update`, data)
     .then((response) => response.data)
@@ -32,10 +31,6 @@ export const updateAuction = async ({ data }) => {
 };
 
 export const postAuctionImages = async ({ auctionId, data }) => {
-  console.log("dataImage", data);
-  for (const entry of data.entries()) {
-    console.log(entry);
-  }
   return await axios
     .post(`images/upload/image/${auctionId}`, data, {
       headers: {

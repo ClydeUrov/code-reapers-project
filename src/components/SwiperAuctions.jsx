@@ -42,7 +42,7 @@ function SwiperAuctions({ mainImage, images }) {
                     <img
                       src={item.image}
                       alt={i + 1}
-                      className="h-full w-full object-fill"
+                      className="h-full w-full object-none"
                     />
                   </SwiperSlide>
                 );
@@ -80,12 +80,9 @@ function SwiperAuctions({ mainImage, images }) {
             <Swiper
               ref={swiper2Ref}
               className="w-full"
-              // direction="horizontal"
               loop={true}
               spaceBetween={16}
               slidesPerView={3}
-              // freeMode={true}
-              // watchSlidesProgress={true}
               modules={[FreeMode, Thumbs]}
             >
               {images.length &&
@@ -95,7 +92,7 @@ function SwiperAuctions({ mainImage, images }) {
                       <img
                         src={item.image}
                         alt={i + 1}
-                        className="h-[14dvh] w-full  object-fill"
+                        className="h-[14dvh] w-full  object-none"
                       />
                     </SwiperSlide>
                   );

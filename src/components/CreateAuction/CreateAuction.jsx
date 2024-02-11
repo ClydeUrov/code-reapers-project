@@ -23,12 +23,6 @@ const CreateAuction = ({ closeModal, auction }) => {
   data.setHours(data.getHours() + 3);
   const currentData = data.toISOString().slice(0, 16);
 
-  // const data = new Date();
-  // data.setHours(data.getHours() + 1);
-  // const currentData = data.toLocaleString("uk-UA").replace(", ", "T").slice(0, 16);
-
-  console.log(currentData);
-
   const handleImageChangeOrDrop = async (e, index) => {
     const file = e.target.files?.[0] ?? e.dataTransfer.files?.[0];
 
