@@ -15,10 +15,21 @@
 - Backend: Логіка та обробка запитів виконується за допомогою мови програмування Java.
 - Design: https://www.figma.com/file/0qxosXTTVfGoFVj1yuuPiF/Untitled?type=design&node-id=0-1&mode=design&t=Cw11dJlGcngDsFvN-0
 
-Інсталяція та запуск:
+#### Інсталяція та запуск:
+1. Перехід на сайт:
+У зв'язку із довгим з'єднанням та дозвілом на отримання та під'єднання SSH на платформі AWS..
+- Відкрийте сайт за посиланням: https://code-reapers-project.vercel.app/
+- Дайте дозвіл на отримання незахищенних данних
+![Path1](src/icons/Path1.png)
+![Path2](src/icons/Path2.png)
+- Користуйтесь!
+
+2. Локальне з'єднання:
 - Клонуйте репозиторій на ваш комп'ютер.
 - Запустіть серверний додаток.
 - Запустіть веб-інтерфейс.
+
+
 
 # Getting Started with Create React App
 
