@@ -92,7 +92,13 @@ function BetsChat({ prevMess, auction }) {
 
   const uniqueArr = [...new Set(messages.map((el) => el.userEmail))];
 
-  if (!user) setError("You must be logged in");
+  useEffect(() => {
+    if (!user) {
+      setError("You must be logged in");
+    } else {
+      setError(""); // Очистите ошибку, если пользователь залогинен
+    }
+  }, [user]);
 
   if (!messages.length && auction.state === "CLOSED") {
     return (
